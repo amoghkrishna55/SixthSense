@@ -50,7 +50,7 @@ export default function CaptureInfo() {
           contents: [
             {
               parts: [
-                { text: "What is the emotion of the person" },
+                { text: "What is this picture?" },
                 {
                   inline_data: {
                     mime_type: "image/jpeg",
@@ -103,7 +103,6 @@ export default function CaptureInfo() {
               )}
               {apiResults && (
                 <View>
-                  <Text style={styles.modalText}>Gemini API Results:</Text>
                   <Text style={styles.modalText}>
                     {JSON.stringify(apiResults)}
                   </Text>
