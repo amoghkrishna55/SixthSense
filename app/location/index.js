@@ -31,6 +31,18 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (location && lang && long) {
+      let dist = distance(
+        location.coords.latitude,
+        parseFloat(lang),
+        location.coords.longitude,
+        parseFloat(long)
+      );
+      setDist(dist + "km");
+    }
+  }, [location, lang, long]);
+
+  useEffect(() => {
     (async () => {
       if (Platform.OS === "android" && !Device.isDevice) {
         setErrorMsg(
@@ -51,14 +63,6 @@ export default function App() {
       );
       setLang(client.data.lang);
       setLong(client.data.long);
-
-      let dist = distance(
-        location.coords.latitude,
-        31.247804381583496,
-        location.coords.longitude,
-        75.70385317885206
-      );
-      setDist(dist + "km");
     })();
   }, []);
 
