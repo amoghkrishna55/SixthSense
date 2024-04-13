@@ -28,7 +28,7 @@ export default function Home(props) {
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => router.push("/loaction")}
+          onPress={() => router.push("/location")}
         >
           <Text style={styles.text}>{titleSensor}</Text>
         </Pressable>

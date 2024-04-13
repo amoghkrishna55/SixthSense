@@ -12,6 +12,10 @@ const RootLayer = () => {
         name="info/index"
         options={{ headerTitle: "Surrounding Sensor" }}
       />
+      <Stack.Screen
+        name="location/index"
+        options={{ headerTitle: "Location" }}
+      />
     </Stack>
   );
 };
