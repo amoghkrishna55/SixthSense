@@ -3,6 +3,7 @@ import { Platform, Text, View, StyleSheet } from "react-native";
 import Device from "expo-device";
 import * as Location from "expo-location";
 import axios from "axios";
+import * as Speech from "expo-speech";
 
 export default function App() {
   const [location, setLocation] = useState(null);
@@ -10,6 +11,8 @@ export default function App() {
   const [dist, setDist] = useState(null);
   const [lang, setLang] = useState(null);
   const [long, setLong] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBeyond, setIsBeyond] = useState(false);
 
   const distance = (lat1, lat2, lon1, lon2) => {
     lon1 = (lon1 * Math.PI) / 180;
@@ -32,24 +35,29 @@ export default function App() {
 
   useEffect(() => {
     if (location && lang && long) {
+      setIsLoading(true);
       let dist = distance(
         location.coords.latitude,
         parseFloat(lang),
         location.coords.longitude,
         parseFloat(long)
       );
+      if (dist > 5) {
+        setIsBeyond(true);
+      } else {
+        Speech.speak("You are within the safe area.");
+      }
       setDist(dist + "km");
+      setIsLoading(false);
     }
   }, [location, lang, long]);
 
   useEffect(() => {
+    Speech.speak(
+      "Status of your current zone. Please wait while we fetch your location."
+    );
     (async () => {
-      if (Platform.OS === "android" && !Device.isDevice) {
-        setErrorMsg(
-          "Oops, this will not work on Snack in an Android Emulator. Try it on your device!"
-        );
-        return;
-      }
+      setIsLoading(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
@@ -63,6 +71,7 @@ export default function App() {
       );
       setLang(client.data.lang);
       setLong(client.data.long);
+      setIsLoading(false);
     })();
   }, []);
 
@@ -75,9 +84,20 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>{dist}</Text>
-      <Text style={styles.paragraph}>Client set Latitude : {lang}</Text>
-      <Text style={styles.paragraph}>Client set Longitude : {long}</Text>
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <Text style={styles.paragraph}>{dist}</Text>
+          <Text style={styles.paragraph}>Client set Latitude : {lang}</Text>
+          <Text style={styles.paragraph}>Client set Longitude : {long}</Text>
+          {isBeyond && (
+            <Text style={styles.beyond}>
+              You are beyond the Safe Area set by the Client
+            </Text>
+          )}
+        </>
+      )}
     </View>
   );
 }
@@ -91,6 +111,11 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 18,
+    textAlign: "center",
+  },
+  beyond: {
+    color: "red",
+    fontSize: 22,
     textAlign: "center",
   },
 });

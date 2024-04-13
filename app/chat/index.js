@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextInput,
   Button,
@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import Chatbubble from "./ChatBubble.js";
 import { speak, isSpeakingAsync, stop } from "expo-speech";
+import * as Speech from "expo-speech";
 
 const Chatbot = () => {
   const [chat, setChat] = useState([]);
@@ -22,6 +23,10 @@ const Chatbot = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const API_KEY = process.env.EXPO_PUBLIC_GOOGLE_GEMINI_API;
+
+  useEffect(() => {
+    Speech.speak("You are now talking Sixth Sense.");
+  }, []);
 
   const handleUserInput = async () => {
     let updatedChat = [...chat, { role: "user", parts: [{ text: userInput }] }];

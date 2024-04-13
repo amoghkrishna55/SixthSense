@@ -6,6 +6,7 @@ import {
   Text,
   Modal,
   Image,
+  Pressable,
 } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import axios from "axios";
@@ -20,6 +21,9 @@ export default function CaptureInfo() {
   const cameraRef = useRef(null);
 
   useEffect(() => {
+    Speech.speak(
+      "You have clicked on surrouding sensor. Please take a picture."
+    );
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
@@ -62,6 +66,7 @@ export default function CaptureInfo() {
           ],
         }
       );
+      console.log(response.data.candidates[0].content.parts[0].text);
       setApiResults(response.data.candidates[0].content.parts[0].text);
       Speech.speak(response.data.candidates[0].content.parts[0].text);
     } catch (error) {
@@ -83,7 +88,7 @@ export default function CaptureInfo() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={takePicture}>
+    <TouchableWithoutFeedback onPress={() => takePicture()}>
       <View style={styles.container}>
         <Camera
           ref={cameraRef}

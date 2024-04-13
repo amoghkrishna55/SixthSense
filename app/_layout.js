@@ -6,7 +6,7 @@ const RootLayer = () => {
       <Stack.Screen name="index" options={{ headerTitle: "SixthSense" }} />
       <Stack.Screen
         name="chat/index"
-        options={{ headerTitle: "Mental Health" }}
+        options={{ headerTitle: "Sixth Sense" }}
       />
       <Stack.Screen
         name="info/index"
