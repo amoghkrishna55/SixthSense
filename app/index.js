@@ -26,7 +26,10 @@ export default function Home(props) {
         <Pressable style={styles.button} onPress={() => router.push("/info")}>
           <Text style={styles.text}>{titleSensor}</Text>
         </Pressable>
-        <Pressable style={styles.button} onPress={() => router.push("/test")}>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.push("/loaction")}
+        >
           <Text style={styles.text}>{titleSensor}</Text>
         </Pressable>
       </View>
