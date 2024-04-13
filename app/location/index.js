@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Platform, Text, View, StyleSheet } from "react-native";
 import Device from "expo-device";
 import * as Location from "expo-location";
+import axios from "axios";
 
 export default function App() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [dist, setDist] = useState(null);
+  const [lang, setLang] = useState(null);
+  const [long, setLong] = useState(null);
 
   const distance = (lat1, lat2, lon1, lon2) => {
     lon1 = (lon1 * Math.PI) / 180;
@@ -43,6 +46,11 @@ export default function App() {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      let client = await axios.get(
+        "https://linkify.pockethost.io/api/collections/client/records/lr5n43fwme46jbn"
+      );
+      setLang(client.data.lang);
+      setLong(client.data.long);
 
       let dist = distance(
         location.coords.latitude,
@@ -59,13 +67,13 @@ export default function App() {
     text = errorMsg;
   } else if (location) {
     text = JSON.stringify(location);
-    console.log(text);
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>{text}</Text>
       <Text style={styles.paragraph}>{dist}</Text>
+      <Text style={styles.paragraph}>Client set Latitude : {lang}</Text>
+      <Text style={styles.paragraph}>Client set Longitude : {long}</Text>
     </View>
   );
 }
