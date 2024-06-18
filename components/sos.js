@@ -1,11 +1,12 @@
 import React, { useRef, forwardRef, useState } from "react";
 import { Animated, Dimensions, Text, View, StyleSheet } from "react-native";
 import { LongPressGestureHandler, State } from "react-native-gesture-handler";
+import * as Haptics from "expo-haptics";
 
 const { height } = Dimensions.get("window");
 
 const SOS = forwardRef(({ children }, ref) => {
-  const [text, setText] = useState("Kepp holding to send SOS");
+  const [text, setText] = useState("Keep holding to send SOS");
   const sizeAnim = useRef(new Animated.Value(0)).current;
   const posX = useRef(new Animated.Value(0)).current;
   const posY = useRef(new Animated.Value(0)).current;
@@ -28,17 +29,11 @@ const SOS = forwardRef(({ children }, ref) => {
         if (sizeAnim._value === 1.8 * height) {
           console.log("sos sent");
           setText("SOS sent");
-
-          setTimeout(() => {
-            Animated.timing(sizeAnim, {
-              toValue: 0,
-              duration: 500,
-              useNativeDriver: false,
-            }).start(() => setText("Keep holding to send SOS"));
-          }, 3000);
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }
       });
     } else if (
+      nativeEvent.state === State.END ||
       nativeEvent.state === State.FAILED ||
       nativeEvent.state === State.CANCELLED
     ) {
@@ -46,7 +41,9 @@ const SOS = forwardRef(({ children }, ref) => {
         toValue: 0,
         duration: 500,
         useNativeDriver: false,
-      }).start();
+      }).start(() => {
+        setText("Kepp holding to send SOS");
+      });
     }
   };
 
