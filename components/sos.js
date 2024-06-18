@@ -27,7 +27,7 @@ const SOS = forwardRef(({ children }, ref) => {
         useNativeDriver: false,
       }).start(() => {
         if (sizeAnim._value === 1.8 * height) {
-          console.log("sos sent");
+          console.log("SOS sent");
           setText("SOS sent");
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }
@@ -42,7 +42,7 @@ const SOS = forwardRef(({ children }, ref) => {
         duration: 500,
         useNativeDriver: false,
       }).start(() => {
-        setText("Kepp holding to send SOS");
+        setText("Keep holding to send SOS");
       });
     }
   };
@@ -50,7 +50,7 @@ const SOS = forwardRef(({ children }, ref) => {
   return (
     <LongPressGestureHandler
       onHandlerStateChange={onLongPressGestureEvent}
-      minDurationMs={200}
+      minDurationMs={100}
     >
       <View style={styles.container}>
         {children}
