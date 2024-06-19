@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import LottieView from "lottie-react-native";
+import Alert from "../components/alert";
 
 export const Check = ({ setIsClient }) => {
   const animationRef = useRef(null);
@@ -12,21 +13,24 @@ export const Check = ({ setIsClient }) => {
   }, []);
 
   return (
-    <View style={style.container}>
-      <LottieView
-        ref={animationRef}
-        source={require("../assets/check_anim.json")}
-        style={{ width: 300, height: 300 }}
-      />
-      <View style={style.buttonContainer}>
-        <Pressable style={style.button} onPress={() => setIsClient(true)}>
-          <Text style={style.text}>Client</Text>
-        </Pressable>
-        <Pressable style={style.button} onPress={() => setIsClient(false)}>
-          <Text style={style.text}>Admin</Text>
-        </Pressable>
+    <>
+      <View style={style.container}>
+        <LottieView
+          ref={animationRef}
+          source={require("../assets/check_anim.json")}
+          style={{ width: 300, height: 300 }}
+        />
+        <View style={style.buttonContainer}>
+          <Pressable style={style.button} onPress={() => setIsClient(true)}>
+            <Text style={style.text}>Client</Text>
+          </Pressable>
+          <Pressable style={style.button} onPress={() => setIsClient(false)}>
+            <Text style={style.text}>Admin</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+      <Alert />
+    </>
   );
 };
 
