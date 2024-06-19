@@ -16,6 +16,16 @@ const SOS = forwardRef(({ children }, ref) => {
     outputRange: [0, 5],
   });
 
+  const shrinkCircle = () => {
+    Animated.timing(sizeAnim, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start(() => {
+      setText("Keep holding to send SOS");
+    });
+  };
+
   const onLongPressGestureEvent = ({ nativeEvent }) => {
     if (nativeEvent.state === State.ACTIVE) {
       posX.setValue(nativeEvent.x);
@@ -30,6 +40,9 @@ const SOS = forwardRef(({ children }, ref) => {
           console.log("SOS sent");
           setText("SOS sent");
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          setTimeout(() => {
+            shrinkCircle();
+          }, 500);
         }
       });
     } else if (
@@ -37,13 +50,7 @@ const SOS = forwardRef(({ children }, ref) => {
       nativeEvent.state === State.FAILED ||
       nativeEvent.state === State.CANCELLED
     ) {
-      Animated.timing(sizeAnim, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(() => {
-        setText("Keep holding to send SOS");
-      });
+      shrinkCircle();
     }
   };
 
