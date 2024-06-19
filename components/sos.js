@@ -22,7 +22,9 @@ const SOS = forwardRef(({ children }, ref) => {
       duration: 500,
       useNativeDriver: false,
     }).start(() => {
-      setText("Keep holding to send SOS");
+      if (sizeAnim._value === 0) {
+        setText("Keep holding to send SOS");
+      }
     });
   };
 
