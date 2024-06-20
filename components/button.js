@@ -1,7 +1,8 @@
 import React from "react";
 import { Text, Pressable, StyleSheet } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default Button = ({ text, onPress }) => {
+export default Button = ({ text, onPress, Ion }) => {
   return (
     <Pressable
       style={[
@@ -11,6 +12,7 @@ export default Button = ({ text, onPress }) => {
       onPress={() => onPress()}
     >
       <Text style={styles.buttontext}>{text}</Text>
+      <Ionicons name={Ion} size={23} color="white" />
     </Pressable>
   );
 };
