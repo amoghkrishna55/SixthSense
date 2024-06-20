@@ -1,9 +1,9 @@
-import { Pressable, Text } from "react-native";
+import Button from "../components/button";
 
 export const Admin = ({ setIsClient }) => {
   return (
-    <Pressable onPress={() => setIsClient(null)}>
-      <Text>Check</Text>
-    </Pressable>
+    <>
+      <Button text="Check" onPress={() => setIsClient(null)} />
+    </>
   );
 };
