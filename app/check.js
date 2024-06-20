@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import LottieView from "lottie-react-native";
 import Alert from "../components/alert";
 
 export const Check = ({ setIsClient }) => {
   const animationRef = useRef(null);
+  const [alert, setAlert] = useState([null, null, null, false]);
 
   useEffect(() => {
     if (animationRef.current) {
@@ -21,15 +22,41 @@ export const Check = ({ setIsClient }) => {
           style={{ width: 300, height: 300 }}
         />
         <View style={style.buttonContainer}>
-          <Pressable style={style.button} onPress={() => setIsClient(true)}>
+          <Pressable
+            style={style.button}
+            onPress={() =>
+              setAlert([
+                "Set device as Client",
+                () => {
+                  setIsClient(true), setAlert([null, null, null, false]);
+                },
+                () => setAlert([null, null, null, false]),
+                true,
+              ])
+            }
+          >
             <Text style={style.text}>Client</Text>
           </Pressable>
-          <Pressable style={style.button} onPress={() => setIsClient(false)}>
+          <Pressable
+            style={style.button}
+            onPress={() =>
+              setAlert([
+                "Set device as Admin",
+                () => {
+                  setIsClient(false), setAlert([null, null, null, false]);
+                },
+                () => setAlert([null, null, null, false]),
+                true,
+              ])
+            }
+          >
             <Text style={style.text}>Admin</Text>
           </Pressable>
         </View>
       </View>
-      <Alert />
+      {alert[3] && alert[0] != null ? (
+        <Alert alert={alert[0]} onTrue={alert[1]} onFalse={alert[2]} />
+      ) : null}
     </>
   );
 };
