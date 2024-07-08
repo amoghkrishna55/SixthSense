@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import {
   PanGestureHandler,
@@ -7,8 +7,44 @@ import {
 } from "react-native-gesture-handler";
 import SOS from "../components/sos";
 import { router } from "expo-router";
+import { database } from "../components/firebase.mjs";
+import { ref, update } from "firebase/database";
+import * as Location from "expo-location";
 
 export default function Client({ setIsClient }) {
+  useEffect(() => {
+    let intervalId;
+
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      console.log(location.coords.latitude, location.coords.longitude);
+      const rootRef = ref(database);
+      update(rootRef, {
+        location: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+      });
+    };
+
+    const startLoggingLocation = async () => {
+      intervalId = setInterval(async () => {
+        await getLocation();
+      }, 10000); // Fetch location every 10 seconds
+    };
+
+    startLoggingLocation();
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval on component unmount
+    };
+  }, []);
   const onSwipeGestureEvent = ({ nativeEvent }) => {
     if (nativeEvent.state === State.END) {
       if (Math.abs(nativeEvent.velocityX) > Math.abs(nativeEvent.velocityY)) {

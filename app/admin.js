@@ -1,12 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { database } from "../components/firebase.mjs";
+import { router } from "expo-router";
+import { off, ref, onValue } from "firebase/database";
 
 import Button from "../components/button";
 
 export const Admin = ({ setIsClient }) => {
   const currentHour = new Date().getHours();
   const [totalClient, setTotalClient] = useState("Loading...");
+  const [trying, setTrying] = useState("Loading...");
   let greeting;
+
+  useEffect(() => {
+    const rootRef = ref(database); // Reference to the root of the database
+    const callback = (snapshot) => {
+      console.log(snapshot.val());
+      if (snapshot.exists()) {
+        setTrying(snapshot.val().location.latitude);
+      } else {
+        console.log("No data available");
+      }
+    };
+
+    onValue(rootRef, callback);
+
+    // Cleanup function to unsubscribe from the listener when the component unmounts
+    return () => {
+      off(rootRef, "value", callback);
+      console.log("Unsubscribed from the listener");
+    };
+  }, []);
 
   if (currentHour < 12) {
     greeting = "Good Morning";
@@ -21,9 +45,9 @@ export const Admin = ({ setIsClient }) => {
       <View style={styles.header}>
         <Text style={styles.greeting}>{greeting}</Text>
         <Text style={styles.clientCount}>Total Clients: {totalClient}</Text>
+        <Text style={styles.clientCount}>Trying: {trying}</Text>
       </View>
       <View style={styles.buttons}>
-        <Button text="Check" onPress={() => setIsClient(null)} />
         <Button
           text="Inbox "
           onPress={() => setIsClient(null)}
@@ -36,7 +60,7 @@ export const Admin = ({ setIsClient }) => {
         />
         <Button
           text="Track Clients "
-          onPress={() => setIsClient(null)}
+          onPress={() => router.push("/location")}
           Ion={"location-outline"}
         />
       </View>
