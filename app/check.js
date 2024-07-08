@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import LottieView from "lottie-react-native";
 import Alert from "../components/alert";
+import Toast from "react-native-toast-message";
 
 export const Check = ({ setIsClient }) => {
   const animationRef = useRef(null);
@@ -11,6 +12,12 @@ export const Check = ({ setIsClient }) => {
     if (animationRef.current) {
       animationRef.current.play();
     }
+    Toast.show({
+      type: "error",
+      position: "top",
+      text1: "Select your role",
+      text2: "Are you a Client or an Admin?",
+    });
   }, []);
 
   return (
