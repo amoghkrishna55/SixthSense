@@ -76,7 +76,7 @@ export default function App() {
       <View style={styles.buttonContainer}>
         <Button
           text="Change Boundary "
-          onPress={() => setIsClient(null)}
+          onPress={() => router.push("/")}
           Ion={"locate-outline"}
           style={{
             position: "absolute",
