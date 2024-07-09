@@ -2,22 +2,24 @@ import React, { useRef, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import LottieView from "lottie-react-native";
 import Alert from "../components/alert";
-import Toast from "react-native-toast-message";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Check = ({ setIsClient }) => {
   const animationRef = useRef(null);
   const [alert, setAlert] = useState([null, null, null, false]);
 
+  // const storage = async (value) => {
+  //   try {
+  //     await AsyncStorage.setItem("isClient", value);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
   useEffect(() => {
     if (animationRef.current) {
       animationRef.current.play();
     }
-    Toast.show({
-      type: "error",
-      position: "top",
-      text1: "Select your role",
-      text2: "Are you a Client or an Admin?",
-    });
   }, []);
 
   return (
@@ -36,6 +38,7 @@ export const Check = ({ setIsClient }) => {
                 "Set device as Client",
                 () => {
                   setIsClient(true), setAlert([null, null, null, false]);
+                  // storage("true");
                 },
                 () => setAlert([null, null, null, false]),
                 true,
@@ -51,6 +54,7 @@ export const Check = ({ setIsClient }) => {
                 "Set device as Admin",
                 () => {
                   setIsClient(false), setAlert([null, null, null, false]);
+                  // storage("false");
                 },
                 () => setAlert([null, null, null, false]),
                 true,
