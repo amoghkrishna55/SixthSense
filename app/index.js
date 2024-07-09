@@ -22,15 +22,16 @@ export default function App() {
   //   getdata();
   // }, []);
   return (
-    <>
-      {isClient === null ? (
-        <Check setIsClient={setIsClient} />
-      ) : isClient ? (
-        <Client setIsClient={setIsClient} />
-      ) : (
-        <Admin setIsClient={setIsClient} />
-      )}
-      <Toast />
-    </>
+    // <>
+    //   {isClient === null ? (
+    //     <Check setIsClient={setIsClient} />
+    //   ) : isClient ? (
+    //     <Client setIsClient={setIsClient} />
+    //   ) : (
+    //     <Admin setIsClient={setIsClient} />
+    //   )}
+    //   <Toast />
+    // </>
+    <Admin setIsClient={setIsClient} />
   );
 }
