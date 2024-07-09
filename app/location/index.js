@@ -1,10 +1,37 @@
-import React from "react";
-import MapView from "react-native-maps";
+import React, { useEffect, useState } from "react";
+import MapView, { Circle, Marker } from "react-native-maps";
 import { StyleSheet, View, Pressable, Text } from "react-native";
 import Button from "../../components/button";
 import { router } from "expo-router";
+import { database } from "../../components/firebase.mjs";
+import { ref, child, get } from "firebase/database";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function App() {
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [circelLatitude, setCircleLatitude] = useState(0);
+  const [circelLongitude, setCircleLongitude] = useState(0);
+  const [circelRadius, setCircleRadius] = useState(0);
+
+  useEffect(() => {
+    const dbRef = ref(database);
+    get(child(dbRef, "/"))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          setLatitude(snapshot.val().location.latitude);
+          setLongitude(snapshot.val().location.longitude);
+          setCircleLatitude(snapshot.val().boundary.latitude);
+          setCircleLongitude(snapshot.val().boundary.longitude);
+          setCircleRadius(snapshot.val().boundary.radius);
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
   return (
     <View style={styles.container}>
       <Button
@@ -22,13 +49,30 @@ export default function App() {
       />
       <MapView
         style={styles.map}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+        region={{
+          latitude: circelLatitude,
+          longitude: circelLongitude,
+          latitudeDelta: (circelRadius / 40075000) * 360 * 3,
+          longitudeDelta: (circelRadius / 40075000) * 360 * 3,
         }}
-      />
+      >
+        <Circle
+          center={{
+            latitude: circelLatitude,
+            longitude: circelLongitude,
+          }} // Example center
+          radius={circelRadius} // Example radius in meters
+          strokeWidth={2}
+          strokeColor="#3399ff"
+          fillColor="rgba(255, 0, 0, 0.5)"
+        />
+        <Marker
+          coordinate={{ latitude: latitude, longitude: longitude }}
+          title={"Client"}
+        >
+          <Ionicons name="accessibility" size={40} />
+        </Marker>
+      </MapView>
       <View style={styles.buttonContainer}>
         <Button
           text="Change Boundary "
