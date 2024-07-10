@@ -3,7 +3,7 @@ import MapView, {Circle, Marker} from 'react-native-maps';
 import {StyleSheet, View, Pressable, Text} from 'react-native';
 import Button from '../../components/button';
 import {database} from '../../components/firebase.js';
-import {ref, child, get} from 'firebase/database';
+import {ref, child, get, onValue} from 'firebase/database';
 // import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Location({navigation}) {
@@ -15,21 +15,28 @@ export default function Location({navigation}) {
 
   useEffect(() => {
     const dbRef = ref(database);
-    get(child(dbRef, '/'))
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          setLatitude(snapshot.val().location.latitude);
-          setLongitude(snapshot.val().location.longitude);
-          setCircleLatitude(snapshot.val().boundary.latitude);
-          setCircleLongitude(snapshot.val().boundary.longitude);
-          setCircleRadius(snapshot.val().boundary.radius);
-        } else {
-          console.log('No data available');
+    let listener = onValue(dbRef, snapshot => {
+      if (snapshot.exists()) {
+        setLatitude(snapshot.val().location.latitude);
+        setLongitude(snapshot.val().location.longitude);
+        setCircleLatitude(snapshot.val().boundary.latitude);
+        setCircleLongitude(snapshot.val().boundary.longitude);
+        setCircleRadius(snapshot.val().boundary.radius);
+      } else {
+        console.log('No data available');
+      }
+    });
+
+    return () => {
+      try {
+        if (listener) {
+          listener();
+          console.log('unmounting');
         }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      } catch (e) {
+        console.log('error in unmounting');
+      }
+    };
   }, []);
   return (
     <View style={styles.container}>
@@ -65,15 +72,19 @@ export default function Location({navigation}) {
           fillColor="rgba(255, 0, 0, 0.5)"
         />
         <Marker
-          coordinate={{latitude: latitude, longitude: longitude}}
-          title={'Client'}>
-          {/* <Ionicons name="accessibility" size={40} /> */}
-        </Marker>
+          coordinate={{latitude: circelLatitude, longitude: circelLongitude}}
+          title={'Client'}></Marker>
       </MapView>
       <View style={styles.buttonContainer}>
         <Button
           text="Change Boundary "
-          onPress={() => navigation.navigate('Boundary')}
+          onPress={() =>
+            navigation.navigate('Boundary', {
+              latitude: circelLatitude,
+              longitude: circelLongitude,
+              radius: circelRadius,
+            })
+          }
           Ion={'locate-outline'}
           style={{
             position: 'absolute',
