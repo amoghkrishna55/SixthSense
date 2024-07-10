@@ -1,5 +1,5 @@
 import {initializeApp} from 'firebase/app';
-import {getDatabase, ref, onValue, update, off} from 'firebase/database';
+import {getDatabase, ref, onValue, update} from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -37,7 +37,6 @@ export const runSOS = () => {
 };
 
 export const detachListener = () => {
-  const rootRef = ref(database);
   if (unsubscribe) {
     console.log('Detaching listener');
     unsubscribe();
