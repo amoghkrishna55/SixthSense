@@ -1,39 +1,153 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# OSX
+#
+.DS_Store
 
-# dependencies
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+**/.xcode.env.local
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+*.hprof
+.cxx/
+*.keystore
+!debug.keystore
+
+# node.js
+#
 node_modules/
+npm-debug.log
+yarn-error.log
 
-# Expo
-.expo/
-dist/
-web-build/
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
 
-# Native
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
-# Metro
+# Bundle artifact
+*.jsbundle
+
+# Ruby / CocoaPods
+**/Pods/
+/vendor/bundle/
+
+# Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
+# testing
+/coverage
 
-# macOS
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Dependency directories
+node_modules/
+.bundle/
+vendor/
+
+# Build outputs
+build/
 .DS_Store
-*.pem
+*.ipa
+*.apk
 
-# local env files
-.env*.local
+# Gradle files
+.gradle/
+local.properties
 
-# typescript
-*.tsbuildinfo
+# Android Studio
+.idea/
+*.iml
 
-.env
+# Xcode
+xcuserdata/
+*.xccheckout
+*.xcodeproj/*.pbxuser
+*.xcodeproj/*.mode1v3
+*.xcodeproj/*.mode2v3
+*.xcodeproj/*.perspectivev3
+*.xcworkspace/xcuserdata/
+DerivedData/
+*.hmap
 
-android
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+
+# Metro bundler
+*.jsbundle
+.metro-health-check*
+
+# Testing
+/coverage
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+**/.DS_Store
+
+# Watchman
+.watchmanconfig
+
+# Yarn
+.yarnrc.yml
+
+
+# Android
+android/.gradle
+android/build
+android/app/build
+
+# iOS
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/Runner.xcworkspace/xcuserdata/
+ios/Runner.xcworkspace/contents.xcworkspacedata
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+ios/Podfile.lock
+ios/SixthSense/PrivacyInfo.xcprivacy
+
+
+__tests__

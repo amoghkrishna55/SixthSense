@@ -1,20 +1,20 @@
-import React, { useRef, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import LottieView from "lottie-react-native";
-import Alert from "../components/alert";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, {useRef, useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import LottieView from 'lottie-react-native';
+import Alert from '../components/alert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Check = ({ setIsClient }) => {
+export const Check = ({setIsClient}) => {
   const animationRef = useRef(null);
   const [alert, setAlert] = useState([null, null, null, false]);
 
-  // const storage = async (value) => {
-  //   try {
-  //     await AsyncStorage.setItem("isClient", value);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+  const storage = async value => {
+    try {
+      await AsyncStorage.setItem('isClient', value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     if (animationRef.current) {
@@ -27,40 +27,38 @@ export const Check = ({ setIsClient }) => {
       <View style={style.container}>
         <LottieView
           ref={animationRef}
-          source={require("../assets/check_anim.json")}
-          style={{ width: 300, height: 300 }}
+          source={require('../assets/check_anim.json')}
+          style={{width: 300, height: 300}}
         />
         <View style={style.buttonContainer}>
           <Pressable
             style={style.button}
             onPress={() =>
               setAlert([
-                "Set device as Client",
+                'Set device as Client',
                 () => {
                   setIsClient(true), setAlert([null, null, null, false]);
-                  // storage("true");
+                  storage('true');
                 },
                 () => setAlert([null, null, null, false]),
                 true,
               ])
-            }
-          >
+            }>
             <Text style={style.text}>Client</Text>
           </Pressable>
           <Pressable
             style={style.button}
             onPress={() =>
               setAlert([
-                "Set device as Admin",
+                'Set device as Admin',
                 () => {
                   setIsClient(false), setAlert([null, null, null, false]);
-                  // storage("false");
+                  storage('false');
                 },
                 () => setAlert([null, null, null, false]),
                 true,
               ])
-            }
-          >
+            }>
             <Text style={style.text}>Admin</Text>
           </Pressable>
         </View>
@@ -75,34 +73,34 @@ export const Check = ({ setIsClient }) => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#EBEBE6",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#EBEBE6',
     margin: 30,
     borderRadius: 60,
     padding: 20,
   },
   buttonContainer: {
     flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     margin: 30,
     width: 200,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#FF6A60",
+    backgroundColor: '#FF6A60',
     borderRadius: 60,
   },
   text: {
     fontSize: 40,
-    fontWeight: "bold",
-    color: "#292927",
+    fontWeight: 'bold',
+    color: '#292927',
   },
 });

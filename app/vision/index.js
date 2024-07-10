@@ -1,12 +1,12 @@
-import { CameraView, useCameraPermissions } from "expo-camera";
-import { useEffect, useState, useRef } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { gemini } from "../../components/gemini";
+import {CameraView, useCameraPermissions} from 'expo-camera';
+import {useEffect, useState, useRef} from 'react';
+import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {gemini} from '../../components/gemini';
 
-export default function App() {
-  const [facing, setFacing] = useState("back");
+export default function Vision() {
+  const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [info, setInfo] = useState("working");
+  const [info, setInfo] = useState('working');
   const camref = useRef(null);
 
   if (!permission) {
@@ -15,21 +15,21 @@ export default function App() {
   }
 
   const takephoto = async () => {
-    setInfo("Function ran");
-    const photo = await camref.current.takePictureAsync({ base64: true });
+    setInfo('Function ran');
+    const photo = await camref.current.takePictureAsync({base64: true});
     const photo64 = photo.base64;
-    setInfo("Converted to base64");
+    setInfo('Converted to base64');
     const response = await gemini(photo64);
     console.log(response);
     // setInfo(response);
-    console.log("generated");
+    console.log('generated');
   };
 
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
+        <Text style={{textAlign: 'center'}}>
           We need your permission to show the camera
         </Text>
         <Button onPress={requestPermission} title="grant permission" />
@@ -38,7 +38,7 @@ export default function App() {
   }
 
   function toggleCameraFacing() {
-    setFacing((current) => (current === "back" ? "front" : "back"));
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
   return (
@@ -47,8 +47,7 @@ export default function App() {
         style={styles.camera}
         facing={facing}
         onCameraReady={() => takephoto()}
-        ref={camref}
-      >
+        ref={camref}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
@@ -63,25 +62,25 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   camera: {
     flex: 1,
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
     margin: 64,
   },
   button: {
     flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
+    alignSelf: 'flex-end',
+    alignItems: 'center',
   },
   text: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
