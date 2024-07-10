@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import Client from './client';
 import {Admin} from './admin';
 import {Check} from './check';
-// import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {attachListener, detachListener} from '../components/firebase.mjs';
+import {attachListener, detachListener} from '../components/firebase.js';
 
 export default function Main({navigation}) {
   const [isClient, setIsClient] = useState(null);
@@ -39,7 +39,7 @@ export default function Main({navigation}) {
       ) : (
         <Admin setIsClient={setIsClient} navigation={navigation} />
       )}
-      {/* <Toast /> */}
+      <Toast />
     </>
   );
 }

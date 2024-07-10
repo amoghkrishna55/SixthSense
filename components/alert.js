@@ -1,5 +1,4 @@
 import {StyleSheet, View, Text, Pressable, Dimensions} from 'react-native';
-// import Ionicons from "@expo/vector-icons/Ionicons";
 
 const {height, width} = Dimensions.get('window');
 

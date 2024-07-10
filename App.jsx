@@ -8,6 +8,7 @@ import Client from './app/client';
 import {Check} from './app/check';
 import Location from './app/location/index';
 // import Vision from './app/vision';
+import Boundary from './app/boundary';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ function App() {
         <Stack.Screen name="Check" component={Check} />
         <Stack.Screen name="Location" component={Location} />
         {/* <Stack.Screen name="Vision" component={Vision} /> */}
+        <Stack.Screen name="Boundary" component={Boundary} />
       </Stack.Navigator>
     </NavigationContainer>
   );
