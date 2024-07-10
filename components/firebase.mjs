@@ -2,8 +2,8 @@ import {initializeApp} from 'firebase/app';
 import {getDatabase, ref, onValue, update, off} from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDaCUDrdkmsUqED8YP2Or9g1U4UPeMIfD4',
-  authDomain: 'sixthsense-3d1cb.firebaseapp.com',
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   databaseURL: 'https://sixthsense-3d1cb-default-rtdb.firebaseio.com',
   projectId: 'sixthsense-3d1cb',
   storageBucket: 'sixthsense-3d1cb.appspot.com',
