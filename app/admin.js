@@ -11,26 +11,6 @@ export const Admin = ({setIsClient, navigation}) => {
   const [trying, setTrying] = useState('Loading...');
   let greeting;
 
-  // useEffect(() => {
-  //   const rootRef = ref(database); // Reference to the root of the database
-  //   const callback = snapshot => {
-  //     console.log(snapshot.val());
-  //     if (snapshot.exists()) {
-  //       setTrying(snapshot.val().location.latitude);
-  //     } else {
-  //       console.log('No data available');
-  //     }
-  //   };
-
-  //   onValue(rootRef, callback);
-
-  //   // Cleanup function to unsubscribe from the listener when the component unmounts
-  //   return () => {
-  //     off(rootRef, 'value', callback);
-  //     console.log('Unsubscribed from the listener');
-  //   };
-  // }, []);
-
   if (currentHour < 12) {
     greeting = 'Good Morning';
   } else if (currentHour < 18) {
@@ -54,7 +34,7 @@ export const Admin = ({setIsClient, navigation}) => {
         />
         <Button
           text="Send Message  "
-          onPress={() => setIsClient(null)}
+          onPress={() => navigation.navigate('Message')}
           Ion={'send-outline'}
         />
         <Button

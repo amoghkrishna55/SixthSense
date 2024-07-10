@@ -8,6 +8,7 @@ const Boundary = ({onSubmit}) => {
 
   const handleSubmit = () => {
     // Validation or further processing can be done here
+
     onSubmit({
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
