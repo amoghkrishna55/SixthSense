@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MapView, {Circle, Marker} from 'react-native-maps';
 import {StyleSheet, View, Pressable, Text} from 'react-native';
 import Button from '../../components/button';
-import {database} from '../../components/firebase.mjs';
+import {database} from '../../components/firebase.js';
 import {ref, child, get} from 'firebase/database';
 // import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -58,8 +58,8 @@ export default function Location({navigation}) {
           center={{
             latitude: circelLatitude,
             longitude: circelLongitude,
-          }} // Example center
-          radius={circelRadius} // Example radius in meters
+          }}
+          radius={circelRadius}
           strokeWidth={2}
           strokeColor="#3399ff"
           fillColor="rgba(255, 0, 0, 0.5)"
@@ -73,7 +73,7 @@ export default function Location({navigation}) {
       <View style={styles.buttonContainer}>
         <Button
           text="Change Boundary "
-          onPress={() => navigation.navigate('Intersection')}
+          onPress={() => navigation.navigate('Boundary')}
           Ion={'locate-outline'}
           style={{
             position: 'absolute',

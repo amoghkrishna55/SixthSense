@@ -7,7 +7,7 @@ import {
 } from 'react-native-gesture-handler';
 import SOS from '../components/sos';
 // import { router } from "expo-router";
-import {database} from '../components/firebase.mjs';
+import {database} from '../components/firebase.js';
 import {ref, update} from 'firebase/database';
 // import * as Location from "expo-location";
 

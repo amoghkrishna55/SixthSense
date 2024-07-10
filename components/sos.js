@@ -2,7 +2,7 @@ import React, {useRef, forwardRef, useState} from 'react';
 import {Animated, Dimensions, Text, View, StyleSheet} from 'react-native';
 import {LongPressGestureHandler, State} from 'react-native-gesture-handler';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import {runSOS} from './firebase.mjs';
+import {runSOS} from './firebase.js';
 
 const {height} = Dimensions.get('window');
 
