@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-
+import {attachListener} from '../components/firebase';
 import Button from '../components/button';
 
 export const Admin = ({setIsClient, navigation}) => {
@@ -8,6 +8,10 @@ export const Admin = ({setIsClient, navigation}) => {
   const [totalClient, setTotalClient] = useState('Loading...');
   const [trying, setTrying] = useState('Loading...');
   let greeting;
+
+  useEffect(() => {
+    attachListener();
+  });
 
   if (currentHour < 12) {
     greeting = 'Good Morning';
@@ -29,6 +33,11 @@ export const Admin = ({setIsClient, navigation}) => {
           text="Change Role "
           onPress={() => setIsClient(null)}
           Ion={'infinite'}
+        />
+        <Button
+          text="Inbox "
+          onPress={() => setIsClient(null)}
+          Ion={'mail-outline'}
         />
         <Button
           text="Send Message  "

@@ -1,6 +1,5 @@
 import {initializeApp} from 'firebase/app';
 import {getDatabase, ref, onValue, update} from 'firebase/database';
-import Toast from 'react-native-toast-message';
 import {Alert} from 'react-native';
 
 const firebaseConfig = {
@@ -25,19 +24,9 @@ export const attachListener = () => {
   try {
     unsubscribe = onValue(rootRef, snapshot => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
+        console.log('Data Updated running on Admin');
         if (snapshot.val().sos === 1) {
           console.log('SOS received');
-          Toast.show({
-            type: 'error',
-            position: 'bottom',
-            text1: 'SOS received',
-            text2: 'Please check the location',
-            visibilityTime: 4000,
-            autoHide: true,
-            topOffset: 30,
-            bottomOffset: 40,
-          });
           Alert.alert(
             'SOS received',
             'Please check the location',
