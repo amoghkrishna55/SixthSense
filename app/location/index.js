@@ -59,7 +59,7 @@ export default function Location({navigation}) {
           fillColor="rgba(255, 0, 0, 0.5)"
         />
         <Marker
-          coordinate={{latitude: circelLatitude, longitude: circelLongitude}}
+          coordinate={{latitude: latitude, longitude: longitude}}
           title={'Client'}>
           <Ionicons name="accessibility" size={30} color="black" />
         </Marker>
