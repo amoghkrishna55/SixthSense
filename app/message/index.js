@@ -3,16 +3,19 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   ScrollView,
   StyleSheet,
+  Keyboard,
 } from 'react-native';
-import {ref, push, onValue} from 'firebase/database';
+import {ref, push, onValue, update} from 'firebase/database';
 import {database} from '../../components/firebase';
-
+import Button from '../../components/button';
+import Alert from '../../components/alert';
+import Ionicons from '@expo/vector-icons/Ionicons';
 const Message = ({navigation}) => {
   const [inputText, setInputText] = useState('');
   const [messages, setMessages] = useState([]);
+  const [alert, setAlert] = useState([null, null, null, false]);
 
   useEffect(() => {
     const dbRef = ref(database, 'messages');
@@ -29,6 +32,7 @@ const Message = ({navigation}) => {
 
   const handlePress = () => {
     if (inputText !== '') {
+      Keyboard.dismiss();
       const dbRef = ref(database, 'messages');
       push(dbRef, {
         text: inputText,
@@ -41,6 +45,15 @@ const Message = ({navigation}) => {
     }
   };
 
+  const clearLogs = () => {
+    setMessages([]);
+    setAlert([null, null, null, false]);
+    const rootRef = ref(database);
+    update(rootRef, {messages: {}})
+      .catch(error => console.error('Update failed:', error))
+      .then(() => console.log('Successfully cleared logs'));
+  };
+
   const formatTime = timestamp => {
     const date = new Date(timestamp);
     return `${date.getDate()}/${
@@ -49,31 +62,68 @@ const Message = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Message</Text>
-      <TextInput
-        style={styles.input}
-        value={inputText}
-        onChangeText={setInputText}
-        placeholder="Enter your message"
-      />
-      <Button title="Submit" onPress={handlePress} />
-      <ScrollView style={styles.messagesContainer}>
-        {[...messages].reverse().map(message => (
-          <View key={message.id} style={styles.messageContainer}>
-            <Text style={styles.messageText}>{message.text}</Text>
-            <Text style={styles.messageInfo}>
-              Time: {formatTime(message.time)}
-            </Text>
-            <Text style={styles.messageInfo}>Status: {message.status}</Text>
-          </View>
-        ))}
-      </ScrollView>
-      <Button
-        title="Back"
-        onPress={() => navigation.navigate('Intersection')}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
+          <Button
+            text="Back "
+            onPress={() => navigation.navigate('Intersection')}
+            Ion={'arrow-back-outline'}
+          />
+          <Button
+            text="Clear Logs "
+            onPress={() =>
+              setAlert([
+                'Clear all messages?',
+                clearLogs,
+                () => setAlert([null, null, null, false]),
+                true,
+              ])
+            }
+            Ion="trash-outline"
+          />
+        </View>
+        <ScrollView style={styles.messagesContainer}>
+          {[...messages].reverse().map(message => (
+            <View key={message.id} style={styles.messageContainer}>
+              <View style={styles.StatusContainer}>
+                {message.status === 'unread' ? (
+                  <Ionicons name="close" size={25} color="#FF6A60" />
+                ) : (
+                  <Ionicons name="checkmark-done" size={25} color="#FF6A60" />
+                )}
+              </View>
+              <Text style={styles.messageText}>{message.text}</Text>
+              <Text style={styles.messageInfo}>
+                Time: {formatTime(message.time)}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+        <View style={styles.bottomContainer}>
+          <TextInput
+            style={styles.input}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="Enter your message"
+          />
+          <Button
+            text="Send Message "
+            onPress={handlePress}
+            Ion="caret-forward-sharp"
+            style={{borderRadius: 0, margin: 0}}
+          />
+        </View>
+      </View>
+      {alert[3] && alert[0] != null ? (
+        <Alert alert={alert[0]} onTrue={alert[1]} onFalse={alert[2]} />
+      ) : null}
+    </>
   );
 };
 
@@ -82,32 +132,53 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#EBEBE6',
   },
   text: {
     fontSize: 20,
   },
   input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
+    height: 50,
+    borderWidth: 2,
     padding: 10,
-    width: '80%',
+    width: '100%',
+    fontSize: 16,
+    borderColor: '#292927',
   },
   messagesContainer: {
-    width: '90%',
-    maxHeight: '50%',
+    width: '100%',
+    height: '100%',
   },
   messageContainer: {
     padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
+    marginHorizontal: 5,
+    marginVertical: 2,
+    backgroundColor: '#252F2C',
+    borderRadius: 10,
   },
   messageText: {
     fontSize: 16,
+    color: '#fff',
   },
   messageInfo: {
+    marginTop: 5,
     fontSize: 12,
+    color: '#FF6A60',
+    fontWeight: 'bold',
+  },
+  bottomContainer: {
+    width: '100%',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+  },
+  StatusContainer: {
+    position: 'absolute',
+    top: 2,
+    right: 5,
+    // right: 0, // Added to make the container full width
+    // zIndex: 100, // Ensure the button is on top of the map
   },
 });
 
