@@ -54,12 +54,18 @@ export default function Client({setIsClient, navigation}) {
       if (Math.abs(nativeEvent.velocityX) > Math.abs(nativeEvent.velocityY)) {
         if (nativeEvent.velocityX > 0) {
           console.log('Swipe right detected');
-          navigation.navigate('Location');
+          // navigation.navigate('Location');
         } else {
           console.log('Swipe left detected');
         }
+      } else {
+        if (nativeEvent.velocityY > 0) {
+          console.log('Swipe down detected');
+          navigation.navigate('ReadMessage');
+        } else {
+          console.log('Swipe up detected');
+        }
       }
-    } else {
     }
   };
 
@@ -74,9 +80,11 @@ export default function Client({setIsClient, navigation}) {
           </Pressable>
           <SOS>
             <View style={styles.innerContainer}>
-              <Text>Keep holding to activate SOS</Text>
               <Text>Swipe left to go to Vision</Text>
-              <Text>Swipe right to go to Location</Text>
+              <Text>Swipe right does nothing</Text>
+              <Text>Keep holding to activate SOS</Text>
+              <Text>Swipe up to Send Message</Text>
+              <Text>Swipe down to Read Messages</Text>
             </View>
           </SOS>
         </View>

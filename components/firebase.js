@@ -1,5 +1,6 @@
 import {initializeApp} from 'firebase/app';
-import {getDatabase, ref, onValue, update} from 'firebase/database';
+import {getDatabase, ref, onValue, update, child, get} from 'firebase/database';
+import {getStorage} from 'firebase/storage';
 import {Alert} from 'react-native';
 
 const firebaseConfig = {
@@ -15,6 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const database = getDatabase(app);
+export const storage = getStorage(app);
 let unsubscribe = null;
 
 export const attachListener = () => {
@@ -58,6 +60,32 @@ export const runSOS = () => {
   update(rootRef, {sos: 1})
     .catch(error => console.error('Update failed:', error))
     .then(() => console.log('SOS sent from firebase.mjs'));
+};
+export const updateStatus = () => {
+  const db = getDatabase();
+  const messagesRef = ref(db, 'messages');
+
+  get(child(messagesRef, '/'))
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        const updates = {};
+        snapshot.forEach(childSnapshot => {
+          const key = childSnapshot.key;
+          updates[`/messages/${key}/status`] = 'unread';
+        });
+
+        update(ref(db), updates)
+          .then(() => console.log('All messages updated to read.'))
+          .catch(error =>
+            console.error('Error updating message statuses: ', error),
+          );
+      } else {
+        console.log('No messages found.');
+      }
+    })
+    .catch(error => {
+      console.error('Error reading messages: ', error);
+    });
 };
 
 export const detachListener = () => {
