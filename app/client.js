@@ -5,56 +5,58 @@ import {
   State,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
+import {detachListener} from '../components/firebase.js';
 import SOS from '../components/sos';
-// import { router } from "expo-router";
 import {database} from '../components/firebase.js';
 import {ref, update} from 'firebase/database';
-// import * as Location from "expo-location";
+import * as Location from 'expo-location';
 
 export default function Client({setIsClient, navigation}) {
-  // useEffect(() => {
-  //   let intervalId;
+  useEffect(() => {
+    let locationSubscription;
 
-  //   const getLocation = async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       console.error("Permission to access location was denied");
-  //       return;
-  //     }
+    const getLocationUpdates = async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+      }
 
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     console.log(location.coords.latitude, location.coords.longitude);
-  //     const rootRef = ref(database);
-  //     update(rootRef, {
-  //       location: {
-  //         latitude: location.coords.latitude,
-  //         longitude: location.coords.longitude,
-  //       },
-  //     });
-  //   };
+      locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 10000,
+          distanceInterval: 0,
+        },
+        location => {
+          console.log('Location changed');
+          const rootRef = ref(database);
+          update(rootRef, {
+            location: {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            },
+          });
+        },
+      );
+    };
+    detachListener();
+    getLocationUpdates();
 
-  //   const startLoggingLocation = async () => {
-  //     intervalId = setInterval(async () => {
-  //       await getLocation();
-  //     }, 10000); // Fetch location every 10 seconds
-  //   };
-
-  //   startLoggingLocation();
-
-  //   return () => {
-  //     clearInterval(intervalId); // Clear the interval on component unmount
-  //   };
-  // }, []);
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
+  }, []);
   const onSwipeGestureEvent = ({nativeEvent}) => {
     if (nativeEvent.state === State.END) {
       if (Math.abs(nativeEvent.velocityX) > Math.abs(nativeEvent.velocityY)) {
         if (nativeEvent.velocityX > 0) {
           console.log('Swipe right detected');
-          // router.push("/location");
           navigation.navigate('Location');
         } else {
           console.log('Swipe left detected');
-          // router.push("/vision");
         }
       }
     } else {

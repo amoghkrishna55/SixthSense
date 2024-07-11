@@ -3,7 +3,7 @@ import MapView, {Circle, Marker} from 'react-native-maps';
 import {StyleSheet, View, Pressable, Text} from 'react-native';
 import Button from '../../components/button';
 import {database} from '../../components/firebase.js';
-import {ref, child, get, onValue} from 'firebase/database';
+import {ref, onValue} from 'firebase/database';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Location({navigation}) {

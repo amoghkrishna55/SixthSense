@@ -151,8 +151,6 @@ ios/SixthSense/PrivacyInfo.xcprivacy
 
 
 __tests__
-android/app/src/main/AndroidManifest.xml
-.env
 
 # Expo
 .expo

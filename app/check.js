@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import LottieView from 'lottie-react-native';
 import Alert from '../components/alert';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {detachListener} from '../components/firebase';
 
 export const Check = ({setIsClient}) => {
   const animationRef = useRef(null);
@@ -17,6 +18,7 @@ export const Check = ({setIsClient}) => {
   };
 
   useEffect(() => {
+    detachListener();
     if (animationRef.current) {
       animationRef.current.play();
     }
