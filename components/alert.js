@@ -28,7 +28,7 @@ export default Alert = ({alert, onTrue, onFalse}) => {
               },
             ]}
             onPress={() => onFalse()}>
-            <Text style={styles.buttontext}>Maybe Later </Text>
+            <Text style={styles.buttontext}>Cancel </Text>
             <Ionicons name="skull-outline" size={23} color="#292927" />
           </Pressable>
         </View>
