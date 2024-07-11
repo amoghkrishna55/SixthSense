@@ -33,9 +33,14 @@ const Boundary = ({navigation, route}) => {
           longitude: longitude,
           latitudeDelta: (radius / 40075000) * 360 * 3,
           longitudeDelta: (radius / 40075000) * 360 * 3,
+        }}
+        onPress={e => {
+          const newCoords = e.nativeEvent.coordinate;
+          setLatitude(newCoords.latitude);
+          setLongitude(newCoords.longitude);
         }}>
         <Marker
-          coordinate={{latitude: latitude, longitude: longitude}}
+          coordinate={{latitude: newlatitude, longitude: newlongitude}}
           draggable
           onDragEnd={e => {
             const newCoords = e.nativeEvent.coordinate;
