@@ -4,7 +4,7 @@ import {StyleSheet, View, Pressable, Text} from 'react-native';
 import Button from '../../components/button';
 import {database} from '../../components/firebase.js';
 import {ref, child, get, onValue} from 'firebase/database';
-// import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Location({navigation}) {
   const [latitude, setLatitude] = useState(0);
@@ -40,19 +40,6 @@ export default function Location({navigation}) {
   }, []);
   return (
     <View style={styles.container}>
-      <Button
-        text="Back "
-        onPress={() => navigation.navigate('Intersection')}
-        Ion={'arrow-back-outline'}
-        style={{
-          position: 'sticky',
-          top: 10,
-          left: 10,
-          backgroundColor: 'rgba(255,255,255,0.7)',
-          paddingHorizontal: 20,
-          zIndex: 100,
-        }}
-      />
       <MapView
         style={styles.map}
         region={{
@@ -73,7 +60,9 @@ export default function Location({navigation}) {
         />
         <Marker
           coordinate={{latitude: circelLatitude, longitude: circelLongitude}}
-          title={'Client'}></Marker>
+          title={'Client'}>
+          <Ionicons name="accessibility" size={30} color="black" />
+        </Marker>
       </MapView>
       <View style={styles.buttonContainer}>
         <Button
@@ -86,12 +75,13 @@ export default function Location({navigation}) {
             })
           }
           Ion={'locate-outline'}
-          style={{
-            position: 'absolute',
-            bottom: 10,
-            backgroundColor: 'rgba(255,255,255,0.7)', // Temporary background color for visibility
-            width: '100%', // Ensure the button stretches to fill the container
-          }}
+        />
+      </View>
+      <View style={styles.buttonContainerTop}>
+        <Button
+          text="Back "
+          onPress={() => navigation.navigate('Intersection')}
+          Ion={'arrow-back-outline'}
         />
       </View>
     </View>
@@ -104,7 +94,6 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-    // position: "absolute",
     left: 0,
     right: 0,
     top: 0,
@@ -117,7 +106,11 @@ const styles = StyleSheet.create({
     right: 0, // Added to make the container full width
     zIndex: 100, // Ensure the button is on top of the map
   },
-  buttonText: {
-    color: 'black',
+  buttonContainerTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    // right: 0, // Added to make the container full width
+    // zIndex: 100, // Ensure the button is on top of the map
   },
 });
