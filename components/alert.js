@@ -1,4 +1,5 @@
 import {StyleSheet, View, Text, Pressable, Dimensions} from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const {height, width} = Dimensions.get('window');
 
@@ -15,7 +16,7 @@ export default Alert = ({alert, onTrue, onFalse}) => {
             ]}
             onPress={() => onTrue()}>
             <Text style={styles.buttontext}>Continue </Text>
-            {/* <Ionicons name="arrow-forward-outline" size={23} color="#292927" /> */}
+            <Ionicons name="arrow-forward-outline" size={23} color="#292927" />
           </Pressable>
           <Pressable
             style={[
@@ -28,7 +29,7 @@ export default Alert = ({alert, onTrue, onFalse}) => {
             ]}
             onPress={() => onFalse()}>
             <Text style={styles.buttontext}>Maybe Later </Text>
-            {/* <Ionicons name="skull-outline" size={23} color="#292927" /> */}
+            <Ionicons name="skull-outline" size={23} color="#292927" />
           </Pressable>
         </View>
       </View>

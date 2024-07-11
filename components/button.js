@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, Pressable, StyleSheet} from 'react-native';
-// import Ionicons from "@expo/vector-icons/Ionicons";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default Button = ({text, onPress, Ion}) => {
   return (
@@ -8,7 +8,7 @@ export default Button = ({text, onPress, Ion}) => {
       style={[styles.button, {flexDirection: 'row', justifyContent: 'center'}]}
       onPress={() => onPress()}>
       <Text style={styles.buttontext}>{text}</Text>
-      {/* <Ionicons name={Ion} size={23} color="white" /> */}
+      <Ionicons name={Ion} size={23} color="white" />
     </Pressable>
   );
 };
