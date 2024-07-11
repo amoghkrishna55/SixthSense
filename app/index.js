@@ -13,7 +13,7 @@ export default function Main({navigation}) {
     const getdata = async () => {
       try {
         const value = await AsyncStorage.getItem('isClient');
-        if (value !== null) {
+        if (value != null) {
           setIsClient(value === 'true');
         }
       } catch (e) {

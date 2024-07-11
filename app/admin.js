@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-// import {database} from '../components/firebase.mjs';
-// import {off, ref, onValue} from 'firebase/database';
 
 import Button from '../components/button';
 
@@ -28,9 +26,9 @@ export const Admin = ({setIsClient, navigation}) => {
       </View>
       <View style={styles.buttons}>
         <Button
-          text="Inbox "
+          text="Change Role "
           onPress={() => setIsClient(null)}
-          Ion={'chatbubbles-outline'}
+          Ion={'infinite'}
         />
         <Button
           text="Send Message  "
