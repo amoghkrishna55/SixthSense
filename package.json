@@ -20,7 +20,6 @@
     "expo-device": "~6.0.2",
     "expo-linear-gradient": "~13.0.2",
     "expo-location": "~17.0.1",
-    "expo-permissions": "^14.4.0",
     "expo-speech": "~12.0.2",
     "firebase": "^10.12.3",
     "lottie-react-native": "^6.7.2",
