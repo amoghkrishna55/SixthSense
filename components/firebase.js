@@ -10,6 +10,7 @@ import {
 } from 'firebase/database';
 import {getStorage} from 'firebase/storage';
 import {Alert} from 'react-native';
+import * as Device from 'expo-device';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDaCUDrdkmsUqED8YP2Or9g1U4UPeMIfD4',
@@ -123,5 +124,25 @@ export const uploadedAudio = async uri => {
   } catch (error) {
     console.error('Failed to upload audio to database:', error);
     throw error;
+  }
+};
+
+export const updateDevice = stat => {
+  if (stat === true) {
+    const deviceRef = ref(database, '/device');
+    update(deviceRef, {
+      deviceName: Device.deviceName,
+      modelName: Device.modelName,
+    })
+      .then(() => console.log('Device status updated to online'))
+      .catch(error => console.error('Error updating device status:', error));
+  } else {
+    const deviceRef = ref(database, '/device');
+    update(deviceRef, {
+      deviceName: '',
+      modelName: '',
+    })
+      .then(() => console.log('Device status updated to online'))
+      .catch(error => console.error('Error updating device status:', error));
   }
 };

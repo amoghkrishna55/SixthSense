@@ -12,6 +12,8 @@ import {database} from '../../components/firebase';
 import Button from '../../components/button';
 import Alert from '../../components/alert';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {LinearGradient} from 'expo-linear-gradient';
+
 const Message = ({navigation}) => {
   const [inputText, setInputText] = useState('');
   const [messages, setMessages] = useState([]);
@@ -64,6 +66,11 @@ const Message = ({navigation}) => {
   return (
     <>
       <View style={styles.container}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          style={styles.background}
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -132,7 +139,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EBEBE6',
+    backgroundColor: 'transparent',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%',
   },
   text: {
     fontSize: 20,
@@ -148,6 +162,7 @@ const styles = StyleSheet.create({
   messagesContainer: {
     width: '100%',
     height: '100%',
+    backgroundColor: 'transparent',
   },
   messageContainer: {
     padding: 10,

@@ -14,6 +14,7 @@ import Alert from '../../components/alert';
 import Player from '../../components/player';
 import {storage} from '../../components/firebase';
 import {deleteObject, ref as storageref, listAll} from 'firebase/storage';
+import {LinearGradient} from 'expo-linear-gradient';
 
 const Inbox = ({navigation}) => {
   const [messages, setMessages] = useState([]);
@@ -59,6 +60,11 @@ const Inbox = ({navigation}) => {
   return (
     <>
       <View style={styles.container}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          style={styles.background}
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -101,7 +107,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EBEBE6',
+    backgroundColor: 'transparent',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%',
   },
   text: {
     fontSize: 20,
