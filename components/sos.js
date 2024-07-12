@@ -74,7 +74,7 @@ const SOS = forwardRef(({children}, ref) => {
           ref={ref}
           style={{
             position: 'absolute',
-            backgroundColor: 'red',
+            backgroundColor: '#292927',
             borderRadius: 1000,
             width: sizeAnim,
             height: sizeAnim,
