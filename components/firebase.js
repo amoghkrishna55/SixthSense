@@ -112,12 +112,11 @@ export const detachListener = () => {
 
 export const uploadedAudio = async uri => {
   const audioRef = ref(database, '/audio');
-  const currentDate = new Date().toISOString();
 
   try {
     const newAudioRef = await push(audioRef, {
       uri,
-      date: currentDate,
+      date: new Date().getTime(),
       status: 'unread',
     });
     console.log('Audio uploaded with key to database:', newAudioRef.key);

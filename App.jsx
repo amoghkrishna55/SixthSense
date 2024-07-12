@@ -12,6 +12,7 @@ import Boundary from './app/boundary';
 import Message from './app/message';
 import ReadMessage from './app/readMessage';
 import SendMessage from './app/sendMessage';
+import Inbox from './app/inbox';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ function App() {
         <Stack.Screen name="Message" component={Message} />
         <Stack.Screen name="ReadMessage" component={ReadMessage} />
         <Stack.Screen name="SendMessage" component={SendMessage} />
+        <Stack.Screen name="Inbox" component={Inbox} />
       </Stack.Navigator>
     </NavigationContainer>
   );
