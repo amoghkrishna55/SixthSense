@@ -12,6 +12,7 @@ import {ref, update, onValue} from 'firebase/database';
 import * as Location from 'expo-location';
 import {updateDevice} from '../components/firebase.js';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Button from '../components/button.js';
 
 export default function Client({setIsClient, navigation}) {
   const [latitude, setLatitude] = useState(0);
@@ -32,7 +33,7 @@ export default function Client({setIsClient, navigation}) {
         console.log('Distance from boundary:', distanceFromBoundary);
         if (distanceFromBoundary > data.radius / 1000) {
           console.log('Out of boundary');
-          setoutsideBoundary(true);
+          if (latitude != 0 && longitude != 0) setoutsideBoundary(true);
         } else {
           console.log('Inside boundary');
           setoutsideBoundary(false);
@@ -40,7 +41,7 @@ export default function Client({setIsClient, navigation}) {
       }
     });
     return () => listener();
-  });
+  }, [latitude, longitude]);
 
   const distance = (lat1, lat2, lon1, lon2) => {
     lon1 = (lon1 * Math.PI) / 180;
@@ -122,7 +123,7 @@ export default function Client({setIsClient, navigation}) {
     }
   };
 
-  return outsideboundary && latitude != 0 && longitude != 0 ? (
+  return outsideboundary ? (
     <View style={styles.outsideBoundaryScreen}>
       <View style={styles.warningContainer}>
         <Ionicons name="warning-outline" size={80} color="#FFD700" />
@@ -140,16 +141,16 @@ export default function Client({setIsClient, navigation}) {
         onHandlerStateChange={onSwipeGestureEvent}>
         <View style={styles.content}>
           <View style={styles.header}>
-            <Pressable
-              style={styles.backButton}
-              onPress={() => {
-                // updateDevice(false);
-                setIsClient(null);
-              }}>
-              <Ionicons name="arrow-back" size={24} color="#fff" />
-              <Text style={styles.backButtonText}>Back</Text>
-            </Pressable>
-            <Text style={styles.headerTitle}>Client Dashboard</Text>
+            <Button
+              text="Back "
+              onPress={() => setIsClient(null)}
+              Ion={'arrow-back-outline'}
+              style={{
+                margin: 0,
+                padding: 2,
+                borderRadius: 0,
+              }}
+            />
           </View>
 
           <SOS>
@@ -188,8 +189,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#4A90E2',
+    padding: 0,
   },
   backButton: {
     flexDirection: 'row',
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(220, 20, 60, 0.9)', // Crimson with opacity
+    backgroundColor: 'rgba(220, 20, 60, 0.9)',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   warningTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#DC143C', // Crimson
+    color: '#DC143C',
     marginVertical: 20,
   },
   warningText: {
