@@ -8,6 +8,10 @@
 
 SixthSense is a revolutionary mobile application designed to transform how visually impaired individuals navigate and interact with the world around them. Our mission is to enhance awareness, promote independence, and improve the quality of life for the blind community.
 
+<a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
+    <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
+  </a>
+
 ### 🌟 Key Features
 
 - 🔍 **Image Recognition**: Real-time object and scene identification
@@ -49,9 +53,3 @@ Have questions or suggestions? Reach out to me:
 SixthSense is open source and available under the [MIT License](https://github.com/amoghkrishna55/SixthSense/blob/main/LICENSE).
 
 ---
-
-<p align="center">
-  <a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
-    <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
-  </a>
-</p>
