@@ -41,7 +41,7 @@ export default function Client({setIsClient, navigation}) {
       );
     };
     detachListener();
-    getLocationUpdates();
+    // getLocationUpdates();
 
     return () => {
       if (locationSubscription) {
@@ -64,6 +64,7 @@ export default function Client({setIsClient, navigation}) {
           navigation.navigate('ReadMessage');
         } else {
           console.log('Swipe up detected');
+          navigation.navigate('SendMessage');
         }
       }
     }

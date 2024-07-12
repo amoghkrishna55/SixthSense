@@ -1,5 +1,13 @@
 import {initializeApp} from 'firebase/app';
-import {getDatabase, ref, onValue, update, child, get} from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
+  child,
+  get,
+  push,
+} from 'firebase/database';
 import {getStorage} from 'firebase/storage';
 import {Alert} from 'react-native';
 
@@ -99,5 +107,22 @@ export const detachListener = () => {
     unsubscribe = null;
   } else {
     console.log('No active listener to detach');
+  }
+};
+
+export const uploadedAudio = async uri => {
+  const audioRef = ref(database, '/audio');
+  const currentDate = new Date().toISOString();
+
+  try {
+    const newAudioRef = await push(audioRef, {
+      uri,
+      date: currentDate,
+      status: 'unread',
+    });
+    console.log('Audio uploaded with key to database:', newAudioRef.key);
+  } catch (error) {
+    console.error('Failed to upload audio to database:', error);
+    throw error;
   }
 };
