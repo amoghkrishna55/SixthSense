@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
 import {
   PanGestureHandler,
   State,
@@ -8,10 +8,59 @@ import {
 import {detachListener} from '../components/firebase.js';
 import SOS from '../components/sos';
 import {database} from '../components/firebase.js';
-import {ref, update} from 'firebase/database';
+import {ref, update, onValue} from 'firebase/database';
 import * as Location from 'expo-location';
+import {updateDevice} from '../components/firebase.js';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Client({setIsClient, navigation}) {
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [outsideboundary, setoutsideBoundary] = useState(false);
+
+  useEffect(() => {
+    const dbRef = ref(database, 'boundary');
+    const listener = onValue(dbRef, snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        const distanceFromBoundary = distance(
+          latitude,
+          data.latitude,
+          longitude,
+          data.longitude,
+        );
+        console.log('Distance from boundary:', distanceFromBoundary);
+        if (distanceFromBoundary > data.radius / 1000) {
+          console.log('Out of boundary');
+          setoutsideBoundary(true);
+        } else {
+          console.log('Inside boundary');
+          setoutsideBoundary(false);
+        }
+      }
+    });
+    return () => listener();
+  });
+
+  const distance = (lat1, lat2, lon1, lon2) => {
+    lon1 = (lon1 * Math.PI) / 180;
+    lon2 = (lon2 * Math.PI) / 180;
+    lat1 = (lat1 * Math.PI) / 180;
+    lat2 = (lat2 * Math.PI) / 180;
+
+    let dlon = lon2 - lon1;
+    let dlat = lat2 - lat1;
+    let a =
+      Math.pow(Math.sin(dlat / 2), 2) +
+      Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
+
+    let c = 2 * Math.asin(Math.sqrt(a));
+
+    let r = 6371;
+
+    return c * r;
+  };
+
   useEffect(() => {
     let locationSubscription;
 
@@ -30,6 +79,8 @@ export default function Client({setIsClient, navigation}) {
         },
         location => {
           console.log('Location changed');
+          setLatitude(location.coords.latitude);
+          setLongitude(location.coords.longitude);
           const rootRef = ref(database);
           update(rootRef, {
             location: {
@@ -41,7 +92,8 @@ export default function Client({setIsClient, navigation}) {
       );
     };
     detachListener();
-    // getLocationUpdates();
+    updateDevice(true);
+    getLocationUpdates();
 
     return () => {
       if (locationSubscription) {
@@ -70,22 +122,53 @@ export default function Client({setIsClient, navigation}) {
     }
   };
 
-  return (
-    <GestureHandlerRootView style={{flex: 1}}>
+  return outsideboundary && latitude != 0 && longitude != 0 ? (
+    <View style={styles.outsideBoundaryScreen}>
+      <View style={styles.warningContainer}>
+        <Ionicons name="warning-outline" size={80} color="#FFD700" />
+        <Text style={styles.warningTitle}>Outside Boundary</Text>
+        <Text style={styles.warningText}>
+          You have left the designated area. Please return to continue using the
+          app.
+        </Text>
+      </View>
+    </View>
+  ) : (
+    <GestureHandlerRootView style={styles.container}>
       <PanGestureHandler
         onGestureEvent={onSwipeGestureEvent}
         onHandlerStateChange={onSwipeGestureEvent}>
-        <View style={styles.container}>
-          <Pressable onPress={() => setIsClient(null)}>
-            <Text>Click here to go back</Text>
-          </Pressable>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Pressable
+              style={styles.backButton}
+              onPress={() => {
+                // updateDevice(false);
+                setIsClient(null);
+              }}>
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+              <Text style={styles.backButtonText}>Back</Text>
+            </Pressable>
+            <Text style={styles.headerTitle}>Client Dashboard</Text>
+          </View>
+
           <SOS>
-            <View style={styles.innerContainer}>
-              <Text>Swipe left to go to Vision</Text>
-              <Text>Swipe right does nothing</Text>
-              <Text>Keep holding to activate SOS</Text>
-              <Text>Swipe up to Send Message</Text>
-              <Text>Swipe down to Read Messages</Text>
+            <View style={styles.cardContainer}>
+              <View style={styles.card}>
+                <Ionicons name="swap-horizontal" size={40} color="#4A90E2" />
+                <Text style={styles.cardTitle}>Swipe Left/Right</Text>
+                <Text style={styles.cardText}>Navigate between sections</Text>
+              </View>
+              <View style={styles.card}>
+                <Ionicons name="swap-vertical" size={40} color="#50C878" />
+                <Text style={styles.cardTitle}>Swipe Up/Down</Text>
+                <Text style={styles.cardText}>Send/Read Messages</Text>
+              </View>
+              <View style={styles.card}>
+                <Ionicons name="hand-left" size={40} color="#FF6347" />
+                <Text style={styles.cardTitle}>Hold</Text>
+                <Text style={styles.cardText}>Activate SOS</Text>
+              </View>
             </View>
           </SOS>
         </View>
@@ -97,8 +180,61 @@ export default function Client({setIsClient, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#F5F7FA',
+  },
+  content: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#4A90E2',
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: '#fff',
+    marginLeft: 8,
+    fontSize: 16,
+  },
+  headerTitle: {
+    flex: 1,
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  cardContainer: {
+    padding: 16,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 20,
+    marginBottom: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  cardText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
   },
   innerContainer: {
     padding: 20,
@@ -109,5 +245,39 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'red',
     borderRadius: 1000,
+  },
+  outsideBoundaryScreen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(220, 20, 60, 0.9)', // Crimson with opacity
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  warningContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    padding: 30,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  warningTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#DC143C', // Crimson
+    marginVertical: 20,
+  },
+  warningText: {
+    fontSize: 18,
+    color: '#333',
+    textAlign: 'center',
+    lineHeight: 24,
   },
 });
