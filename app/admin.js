@@ -36,7 +36,7 @@ export const Admin = ({setIsClient, navigation}) => {
         />
         <Button
           text="Inbox "
-          onPress={() => setIsClient(null)}
+          onPress={() => navigation.navigate('Inbox')}
           Ion={'mail-outline'}
         />
         <Button
