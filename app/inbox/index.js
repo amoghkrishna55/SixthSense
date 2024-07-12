@@ -61,8 +61,7 @@ const Inbox = ({navigation}) => {
     <>
       <View style={styles.container}>
         <LinearGradient
-          // Background Linear Gradient
-          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          colors={['#4A00E0', '#8E2DE2']}
           style={styles.background}
         />
         <View

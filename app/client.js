@@ -13,11 +13,32 @@ import * as Location from 'expo-location';
 import {updateDevice} from '../components/firebase.js';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Button from '../components/button.js';
+import * as Speech from 'expo-speech';
 
 export default function Client({setIsClient, navigation}) {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [outsideboundary, setoutsideBoundary] = useState(false);
+
+  useEffect(() => {
+    let intervalId;
+    const warning = () => {
+      Speech.speak(
+        'You are outside the boundary, please return to the designated area',
+      );
+    };
+    if (outsideboundary) {
+      warning();
+      intervalId = setInterval(warning, 10000);
+    } else if (intervalId) {
+      clearInterval(intervalId);
+    }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [outsideboundary]);
 
   useEffect(() => {
     const dbRef = ref(database, 'boundary');

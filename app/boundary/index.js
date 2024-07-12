@@ -1,16 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import MapView, {Circle, Marker} from 'react-native-maps';
 import {database} from '../../components/firebase';
 import {ref, update} from 'firebase/database';
 import Button from '../../components/button';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Location from 'expo-location';
 
 const Boundary = ({navigation, route}) => {
   const {latitude, longitude, radius} = route.params;
   const [newlatitude, setLatitude] = useState(latitude);
   const [newlongitude, setLongitude] = useState(longitude);
   const [newradius, setRadius] = useState(radius);
+  const [currLatitude, setCurrLatitude] = useState(0);
+  const [currLongitude, setCurrLongitude] = useState(0);
+  const [fecthing, setFecthing] = useState(true);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+      setCurrLatitude(location.coords.latitude);
+      setCurrLongitude(location.coords.longitude);
+      setFecthing(false);
+    };
+
+    getLocation();
+  }, []);
 
   const handleSubmit = () => {
     const rootRef = ref(database);
@@ -81,11 +103,29 @@ const Boundary = ({navigation, route}) => {
         />
       </View>
       <View style={styles.buttonContainerTop}>
-        <Button
-          text="Back "
-          onPress={() => navigation.navigate('Location')}
-          Ion={'arrow-back-outline'}
-        />
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
+          <Button
+            text="Back "
+            onPress={() => navigation.navigate('Location')}
+            Ion={'arrow-back-outline'}
+          />
+          <Button
+            text={fecthing ? 'Fetching ' : 'Set Current  '}
+            onPress={() => {
+              if (currLatitude != 0 && currLongitude != 0) {
+                setLatitude(currLatitude);
+                setLongitude(currLongitude);
+              }
+            }}
+            Ion={fecthing ? 'cloud-download-outline' : 'locate-outline'}
+          />
+        </View>
       </View>
     </View>
   );
