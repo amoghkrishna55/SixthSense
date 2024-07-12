@@ -37,6 +37,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: cd page && npm install
+      - name: Bundler install
+        run: bundler install
       - name: Build
         run: npm run build
       - name: Setup Pages
