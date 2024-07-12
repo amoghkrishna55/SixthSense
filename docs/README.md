@@ -5,7 +5,7 @@
 Your companion for independence and enhanced awareness, transforming how the blind navigate the world.
 
 <p align="center">
-  <img src="{{ site.baseurl }}/assets/icon.png" alt="SixthSense Logo" width="200"/>
+  <img src="{{ site.baseurl }}../assets/icon.png" alt="SixthSense Logo" width="200"/>
 </p>
 
 ## Features
