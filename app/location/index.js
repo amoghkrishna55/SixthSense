@@ -74,7 +74,7 @@ export default function Location({navigation}) {
               radius: circelRadius,
             })
           }
-          Ion={'locate-outline'}
+          Ion={'logo-tableau'}
         />
       </View>
       <View style={styles.buttonContainerTop}>

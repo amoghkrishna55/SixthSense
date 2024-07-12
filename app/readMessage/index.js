@@ -91,9 +91,7 @@ export default function ReadMessage({navigation}) {
   }, []);
 
   return (
-    <LinearGradient
-      colors={['#4c669f', '#3b5998', '#192f6a']}
-      style={styles.container}>
+    <LinearGradient colors={['#4A00E0', '#8E2DE2']} style={styles.container}>
       <View style={styles.content}>
         <LottieView
           ref={animationRef}

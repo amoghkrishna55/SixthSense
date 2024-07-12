@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 5,
     marginVertical: 2,
-    backgroundColor: '#252F2C',
+    backgroundColor: '#292927',
     borderRadius: 10,
   },
   messageText: {

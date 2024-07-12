@@ -3,6 +3,7 @@ import {Animated, Dimensions, Text, View, StyleSheet} from 'react-native';
 import {LongPressGestureHandler, State} from 'react-native-gesture-handler';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import {runSOS} from './firebase.js';
+import * as Speech from 'expo-speech';
 
 const {height} = Dimensions.get('window');
 
@@ -45,6 +46,7 @@ const SOS = forwardRef(({children}, ref) => {
       }).start(() => {
         if (sizeAnim._value === 1.8 * height) {
           console.log('SOS sent');
+          Speech.speak('SOS ACTIVATED');
           runSOS();
           setText('SOS sent');
           ReactNativeHapticFeedback.trigger('impactHeavy', options);

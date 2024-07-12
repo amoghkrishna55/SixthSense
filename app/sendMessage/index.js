@@ -146,7 +146,7 @@ export default function SendMessage({navigation}) {
     <GestureHandlerRootView style={styles.container}>
       <GestureDetector gesture={onTap}>
         <LinearGradient
-          colors={['#4c669f', '#3b5998', '#192f6a']}
+          colors={['#4A00E0', '#8E2DE2']}
           style={styles.gradientBackground}>
           <View style={styles.content}>
             <LottieView

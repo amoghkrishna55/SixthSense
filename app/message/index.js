@@ -67,8 +67,7 @@ const Message = ({navigation}) => {
     <>
       <View style={styles.container}>
         <LinearGradient
-          // Background Linear Gradient
-          colors={['rgba(0,0,0,0.8)', 'transparent']}
+          colors={['#4A00E0', '#8E2DE2']}
           style={styles.background}
         />
         <View
@@ -118,6 +117,7 @@ const Message = ({navigation}) => {
             value={inputText}
             onChangeText={setInputText}
             placeholder="Enter your message"
+            placeholderTextColor={'white'}
           />
           <Button
             text="Send Message "
@@ -153,11 +153,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderWidth: 2,
+    borderWidth: 1,
     padding: 10,
     width: '100%',
     fontSize: 16,
-    borderColor: '#292927',
+    borderColor: '#FF6A60',
+    color: 'white',
+    backgroundColor: '#292927',
   },
   messagesContainer: {
     width: '100%',
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 5,
     marginVertical: 2,
-    backgroundColor: '#252F2C',
+    backgroundColor: '#292927',
     borderRadius: 10,
   },
   messageText: {
