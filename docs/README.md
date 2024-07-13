@@ -5,7 +5,7 @@
 Your companion for independence and enhanced awareness, transforming how the blind navigate the world.
 
 <p align="center">
-  <img src="{{ site.baseurl }}/assets/banner.png" alt="SixthSense Logo" width="200"/>
+  <img src="{{ site.baseurl }}/assets/banner.png" alt="SixthSense Logo" width="400"/>
 </p>
 
 <p align="center">
@@ -16,6 +16,18 @@ Your companion for independence and enhanced awareness, transforming how the bli
     <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
   </a>
 </p>
+
+## App Screenshots
+
+<p align="center">
+  <img src="{{ site.baseurl }}/assets/main.png" alt="Screenshot 1" width="200"/>
+  <img src="{{ site.baseurl }}/assets/admin.png" alt="Screenshot 2" width="200"/>
+  <img src="{{ site.baseurl }}/assets/client.png" alt="Screenshot 3" width="200"/>
+  <img src="{{ site.baseurl }}/assets/alert.png" alt="Screenshot 3" width="200"/>
+  <img src="{{ site.baseurl }}/assets/message.png" alt="Screenshot 3" width="200"/>
+</p>
+
+## 🌟 Key Features
 
 ### 🔍 Image Recognition
 
@@ -53,16 +65,6 @@ Your companion for independence and enhanced awareness, transforming how the bli
 - Receive notifications about nearby points of interest
 - Configurable alert types (vibration, sound, voice)
 
-## App Screenshots
-
-<p align="center">
-  <img src="{{ site.baseurl }}/assets/main.png" alt="Screenshot 1" width="200"/>
-  <img src="{{ site.baseurl }}/assets/admin.png" alt="Screenshot 2" width="200"/>
-  <img src="{{ site.baseurl }}/assets/client.png" alt="Screenshot 3" width="200"/>
-  <img src="{{ site.baseurl }}/assets/alert.png" alt="Screenshot 3" width="200"/>
-  <img src="{{ site.baseurl }}/assets/message.png" alt="Screenshot 3" width="200"/>
-</p>
-
 ## 🛠️ Technologies
 
 SixthSense leverages cutting-edge technologies to provide a seamless and powerful user experience:
@@ -96,12 +98,3 @@ Have questions, suggestions, or want to join our mission? Reach out to me:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE]({{ site.baseurl }}/license) file for details.
-
-<p align="center">
-  <a href="https://github.com/amoghkrishna55/SixthSense">
-    <img src="https://img.shields.io/badge/View_on-GitHub-blue?style=for-the-badge&logo=github" alt="View on GitHub">
-  </a>
-  <a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
-    <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
-  </a>
-</p>

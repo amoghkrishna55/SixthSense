@@ -14,6 +14,17 @@ SixthSense is a revolutionary mobile application designed to transform how visua
   </a>
 </p>
 
+## 📱 App Preview
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/main.png" alt="SixthSense Screenshot 1" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/admin.png" alt="SixthSense Screenshot 2" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/client.png" alt="SixthSense Screenshot 3" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/alert.png" alt="SixthSense Screenshot 3" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/message.png" alt="SixthSense Screenshot 3" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/location.png" alt="SixthSense Screenshot 3" width="200"/>
+</p>
+
 ## 🌟 Key Features
 
 ### 🔍 Image Recognition
@@ -51,16 +62,6 @@ SixthSense is a revolutionary mobile application designed to transform how visua
 - Set personalized reminders for daily tasks
 - Receive notifications about nearby points of interest
 - Configurable alert types (vibration, sound, voice)
-
-## 📱 App Preview
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/main.png" alt="SixthSense Screenshot 1" width="200"/>
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/admin.png" alt="SixthSense Screenshot 2" width="200"/>
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/client.png" alt="SixthSense Screenshot 3" width="200"/>
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/alert.png" alt="SixthSense Screenshot 3" width="200"/>
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/message.png" alt="SixthSense Screenshot 3" width="200"/>
-</p>
 
 ## 🛠️ Technologies
 
