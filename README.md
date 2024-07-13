@@ -1,14 +1,14 @@
 # Welcome to SixthSense 👋
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/assets/banner.png" alt="SixthSense Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/banner.png" alt="SixthSense Logo" width="400"/>
 </p>
 
 ## Empowering Independence Through Technology 🚀
 
 SixthSense is a revolutionary mobile application designed to transform how visually impaired individuals navigate and interact with the world around them. Our mission is to enhance awareness, promote independence, and improve the quality of life for the blind community.
 
-<p align="right" position="absolute">
+<p align="center">
   <a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
     <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
   </a>
@@ -55,9 +55,11 @@ SixthSense is a revolutionary mobile application designed to transform how visua
 ## 📱 App Preview
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/assets/screenshot1.png" alt="SixthSense Screenshot 1" width="200"/>
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/assets/screenshot2.png" alt="SixthSense Screenshot 2" width="200"/>
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/assets/screenshot3.png" alt="SixthSense Screenshot 3" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/main.png" alt="SixthSense Screenshot 1" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/admin.png" alt="SixthSense Screenshot 2" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/client.png" alt="SixthSense Screenshot 3" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/alert.png" alt="SixthSense Screenshot 3" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/message.png" alt="SixthSense Screenshot 3" width="200"/>
 </p>
 
 ## 🛠️ Technologies
@@ -67,9 +69,7 @@ SixthSense leverages cutting-edge technologies to provide a seamless and powerfu
 - **React Native**: For cross-platform mobile development, ensuring a native feel on both iOS and Android devices.
 - **Firebase**:
   - Real-time database for instant updates
-  - Authentication for secure user management
   - Cloud Functions for serverless backend operations
-- **TensorFlow Lite**: On-device machine learning for fast and efficient image recognition.
 - **Google Maps API**: Accurate location services and navigation capabilities.
 
 ## 🚀 Getting Started
@@ -110,7 +110,3 @@ Have questions, suggestions, or want to join our mission? Reach out to me:
 SixthSense is open source and available under the [MIT License](https://github.com/amoghkrishna55/SixthSense/blob/main/LICENSE).
 
 ---
-
-<p align="center">
-  Made with ❤️ by Amogh Krishna
-</p>
