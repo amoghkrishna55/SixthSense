@@ -25,6 +25,7 @@ Your companion for independence and enhanced awareness, transforming how the bli
   <img src="{{ site.baseurl }}/assets/client.png" alt="Screenshot 3" width="200"/>
   <img src="{{ site.baseurl }}/assets/alert.png" alt="Screenshot 3" width="200"/>
   <img src="{{ site.baseurl }}/assets/message.png" alt="Screenshot 3" width="200"/>
+  <img src="{{ site.baseurl }}/assets/location.png" alt="Screenshot 3" width="200"/>
 </p>
 
 ## 🌟 Key Features
