@@ -2,6 +2,10 @@ name: 'Android Build'
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
 
 jobs:
   build:
@@ -36,9 +40,23 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
-      - name: Upload application
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: app
-          path: android/app/build/outputs/apk/release/app-release.apk
-          retention-days: 3
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./android/app/build/outputs/apk/release/app-release.apk
+          asset_name: app-release-${{ github.event.inputs.version }}.apk
+          asset_content_type: application/vnd.android.package-archive
