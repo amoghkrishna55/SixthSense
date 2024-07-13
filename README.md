@@ -1,14 +1,14 @@
 # Welcome to SixthSense 👋
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/assets/icon.png" alt="SixthSense Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/assets/banner.png" alt="SixthSense Logo" width="200"/>
 </p>
 
 ## Empowering Independence Through Technology 🚀
 
 SixthSense is a revolutionary mobile application designed to transform how visually impaired individuals navigate and interact with the world around them. Our mission is to enhance awareness, promote independence, and improve the quality of life for the blind community.
 
-<p align="center">
+<p align="right" position="absolute">
   <a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
     <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
   </a>
