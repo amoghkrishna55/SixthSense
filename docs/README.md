@@ -2,7 +2,9 @@
 
 [![Build Android app](https://github.com/amoghkrishna55/SixthSense/actions/workflows/android.yml/badge.svg)](https://github.com/amoghkrishna55/SixthSense/actions/workflows/android.yml)
 
-Your companion for independence and enhanced awareness, transforming how the blind navigate the world.
+## Empowering Independence Through Technology 🚀
+
+SixthSense is a revolutionary mobile application designed to transform how visually impaired individuals navigate and interact with the world around them. Our mission is to enhance awareness, promote independence, and improve the quality of life for the blind community.
 
 <p align="center">
   <img src="{{ site.baseurl }}/assets/banner.png" alt="SixthSense Logo" width="400"/>
