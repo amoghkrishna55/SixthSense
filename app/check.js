@@ -6,13 +6,16 @@ import {
   Pressable,
   StatusBar,
   Dimensions,
+  TextInput,
+  Animated,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {detachListener} from '../components/firebase';
+import {detachListener, getAdminPassword} from '../components/firebase';
 import NetInfo from '@react-native-community/netinfo';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Ionicons} from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
+import * as Crypto from 'expo-crypto';
 
 const {width, height} = Dimensions.get('window');
 
@@ -21,6 +24,11 @@ export const Check = ({setIsClient}) => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertAction, setAlertAction] = useState(null);
+  const [adminPassword, setAdminPassword] = useState('');
+  const [showAdminInput, setShowAdminInput] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const shakeAnimation = new Animated.Value(0);
 
   const storage = async value => {
     try {
@@ -28,6 +36,31 @@ export const Check = ({setIsClient}) => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const shakeError = () => {
+    Animated.sequence([
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: -10,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 0,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   useEffect(() => {
@@ -43,14 +76,50 @@ export const Check = ({setIsClient}) => {
     return () => unsubscribe();
   }, []);
 
-  const handlePress = isClient => {
-    setAlertMessage(isClient ? 'Set device as Client' : 'Set device as Admin');
-    setAlertAction(() => () => {
-      setIsClient(isClient);
-      storage(isClient.toString());
+  const hashPassword = async password => {
+    const hash = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      password,
+    );
+    return hash;
+  };
+
+  const checkAdminPassword = async () => {
+    const hashedPassword = await hashPassword(adminPassword);
+    console.log(hashedPassword);
+    const correctPassword = await getAdminPassword();
+    console.log(correctPassword);
+    return hashedPassword === correctPassword;
+  };
+
+  const handlePress = async isClient => {
+    if (isClient) {
+      setAlertMessage('Set device as Client');
+      setShowAdminInput(false);
+      setIsError(false);
+      setAlertAction(() => () => {
+        setIsClient(true);
+        storage('true');
+        setShowAlert(false);
+      });
+      setShowAlert(true);
+    } else {
+      setShowAdminInput(true);
       setShowAlert(false);
-    });
-    setShowAlert(true);
+    }
+  };
+
+  const handleAdminSubmit = async () => {
+    const isCorrect = await checkAdminPassword();
+    if (isCorrect) {
+      setIsClient(false);
+      storage('false');
+      setShowAdminInput(false);
+    } else {
+      setIsError(true);
+      alert('Incorrect password');
+      shakeError();
+    }
   };
 
   return (
@@ -85,17 +154,41 @@ export const Check = ({setIsClient}) => {
           </Pressable>
         </Animatable.View>
       </View>
+      {showAdminInput && (
+        <Animatable.View animation="fadeIn" style={styles.adminInputContainer}>
+          <Animated.View style={{transform: [{translateX: shakeAnimation}]}}>
+            <TextInput
+              style={[
+                styles.adminInput,
+                isError && {borderColor: 'red', borderWidth: 2},
+              ]}
+              placeholder="Enter admin password"
+              placeholderTextColor="#999"
+              secureTextEntry
+              value={adminPassword}
+              onChangeText={setAdminPassword}
+            />
+          </Animated.View>
+          <Pressable
+            style={styles.adminSubmitButton}
+            onPress={handleAdminSubmit}>
+            <Text style={styles.adminSubmitButtonText}>Submit</Text>
+          </Pressable>
+        </Animatable.View>
+      )}
       {showAlert && (
         <Animatable.View animation="slideInUp" style={styles.alertContainer}>
           <Text style={styles.alertText}>{alertMessage}</Text>
           <View style={styles.alertButtons}>
-            <Pressable style={styles.alertButton} onPress={alertAction}>
-              <Text style={styles.alertButtonText}>Confirm</Text>
-            </Pressable>
+            {alertAction && (
+              <Pressable style={styles.alertButton} onPress={alertAction}>
+                <Text style={styles.alertButtonText}>Confirm</Text>
+              </Pressable>
+            )}
             <Pressable
               style={styles.alertButton}
               onPress={() => setShowAlert(false)}>
-              <Text style={styles.alertButtonText}>Cancel</Text>
+              <Text style={styles.alertButtonText}>Close</Text>
             </Pressable>
           </View>
         </Animatable.View>
@@ -196,6 +289,28 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   alertButtonText: {
+    color: '#4A00E0',
+    fontWeight: 'bold',
+  },
+  adminInputContainer: {
+    width: '80%',
+    marginTop: 20,
+  },
+  adminInput: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 10,
+    padding: 10,
+    color: '#fff',
+    marginBottom: 10,
+  },
+  adminSubmitButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+  },
+  adminSubmitButtonText: {
     color: '#4A00E0',
     fontWeight: 'bold',
   },
