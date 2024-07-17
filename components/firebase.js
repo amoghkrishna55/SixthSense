@@ -146,3 +146,31 @@ export const updateDevice = stat => {
       .catch(error => console.error('Error updating device status:', error));
   }
 };
+
+export const getAdminPassword = async () => {
+  const passwordRef = ref(database, '/adminPassword');
+  try {
+    const snapshot = await get(passwordRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      console.log('No password found');
+      return '';
+    }
+  } catch (error) {
+    console.error('Error getting password:', error);
+    throw error;
+  }
+};
+
+export const updateAdminPassword = password => {
+  const passwordRef = ref(database);
+  try {
+    update(passwordRef, {adminPassword: password}).then(() =>
+      console.log('Password updated successfully'),
+    );
+  } catch (error) {
+    console.error('Error updating password:', error);
+    throw error;
+  }
+};

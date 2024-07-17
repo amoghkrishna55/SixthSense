@@ -14,7 +14,7 @@ SixthSense is a revolutionary mobile application designed to transform how visua
   <a href="https://github.com/amoghkrishna55/SixthSense">
     <img src="https://img.shields.io/badge/View_on-GitHub-blue?style=for-the-badge&logo=github" alt="View on GitHub">
   </a>
-  <a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
+  <a href="https://github.com/amoghkrishna55/SixthSense/releases/latest/download/app-release.apk">
     <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
   </a>
 </p>
