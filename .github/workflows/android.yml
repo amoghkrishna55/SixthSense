@@ -1,5 +1,4 @@
-name: 'Android Build'
-
+name: 'Android Build and Release'
 on:
   push:
     branches: ['main']
@@ -39,9 +38,23 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
-      - name: Upload application
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: app
-          path: android/app/build/outputs/apk/release/app-release.apk
-          retention-days: 3
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./android/app/build/outputs/apk/release/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
