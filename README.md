@@ -9,7 +9,7 @@
 SixthSense is a revolutionary mobile application designed to transform how visually impaired individuals navigate and interact with the world around them. Our mission is to enhance awareness, promote independence, and improve the quality of life for the blind community.
 
 <p align="center">
-  <a href="https://nightly.link/amoghkrishna55/SixthSense/workflows/android/main/app.zip">
+  <a href="https://github.com/amoghkrishna55/SixthSense/releases/latest/download/app-release.apk">
     <img src="https://img.shields.io/badge/Download-App-green?style=for-the-badge&logo=android" alt="Download App">
   </a>
 </p>

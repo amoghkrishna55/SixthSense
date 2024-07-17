@@ -6,20 +6,25 @@ import {
   Dimensions,
   SafeAreaView,
   TouchableOpacity,
+  TextInput,
+  Pressable,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Ionicons} from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
-import {attachListener} from '../components/firebase';
+import {attachListener, updateAdminPassword} from '../components/firebase';
 import Button from '../components/button';
 import {database} from '../components/firebase';
 import {ref, onValue} from 'firebase/database';
+import * as Crypto from 'expo-crypto';
 
 const {width, height} = Dimensions.get('window');
 
-const ClientInformation = () => {
+const ClientInformation = ({showSettings, setShowSettings}) => {
   const [deviceName, setDeviceName] = useState('');
   const [modelName, setModelName] = useState('');
+  const [Password, setPassword] = useState('');
+  const [againPassword, setAgainPassword] = useState('');
 
   useEffect(() => {
     const deviceInfoRef = ref(database, 'device');
@@ -34,7 +39,56 @@ const ClientInformation = () => {
     return () => deviceValue();
   }, []);
 
-  return (
+  const hashPassword = async password => {
+    const hash = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      password,
+    );
+    return hash;
+  };
+
+  const handleSubmitPassword = () => {
+    if (Password !== againPassword || Password === '') {
+      alert('Passwords do not match');
+      return;
+    }
+    hashPassword(Password)
+      .then(hash => {
+        console.log('Hashed password:', hash);
+        updateAdminPassword(hash);
+        setPassword('');
+        setAgainPassword('');
+        setShowSettings(false);
+        alert('Password updated successfully');
+      })
+      .catch(error => console.error('Error hashing password:', error));
+  };
+
+  return showSettings ? (
+    <Animatable.View animation="fadeIn" style={styles.adminInputContainer}>
+      <TextInput
+        style={styles.adminInput}
+        placeholder="Enter new password"
+        placeholderTextColor="#999"
+        secureTextEntry
+        value={Password}
+        onChangeText={setPassword}
+      />
+      <TextInput
+        style={styles.adminInput}
+        placeholder="Enter password again"
+        placeholderTextColor="#999"
+        secureTextEntry
+        value={againPassword}
+        onChangeText={setAgainPassword}
+      />
+      <Pressable
+        style={styles.adminSubmitButton}
+        onPress={handleSubmitPassword}>
+        <Text style={styles.adminSubmitButtonText}>Submit</Text>
+      </Pressable>
+    </Animatable.View>
+  ) : (
     <Animatable.View animation="fadeInUp" style={styles.clientInfo}>
       <Text style={styles.clientInfoTitle}>Client Information</Text>
       <View style={styles.clientInfoRow}>
@@ -53,7 +107,7 @@ const ClientInformation = () => {
   );
 };
 
-const Header = () => {
+const Header = ({setShowSettings, showSettings}) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -91,11 +145,10 @@ const Header = () => {
             })}
           </Text>
         </View>
-        <TouchableOpacity style={styles.notificationButton}>
-          <Ionicons name="notifications-outline" size={24} color="#fff" />
-          <View style={styles.notificationBadge}>
-            <Text style={styles.notificationBadgeText}>3</Text>
-          </View>
+        <TouchableOpacity
+          style={styles.notificationButton}
+          onPress={() => setShowSettings(!showSettings)}>
+          <Ionicons name="cog-outline" size={30} color="#fff" />
         </TouchableOpacity>
       </LinearGradient>
     </Animatable.View>
@@ -103,14 +156,19 @@ const Header = () => {
 };
 
 export const Admin = ({setIsClient, navigation}) => {
+  const [showSettings, setShowSettings] = useState(false);
+
   useEffect(() => {
     attachListener();
   }, []);
   return (
     <LinearGradient colors={['#4A00E0', '#8E2DE2']} style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <Header />
-        <ClientInformation />
+        <Header showSettings={showSettings} setShowSettings={setShowSettings} />
+        <ClientInformation
+          showSettings={showSettings}
+          setShowSettings={setShowSettings}
+        />
         <Animatable.View
           animation="fadeInUp"
           delay={300}
@@ -239,5 +297,31 @@ const styles = StyleSheet.create({
   },
   buttons: {
     width: width * 0.9,
+  },
+  adminInputContainer: {
+    width: '80%',
+    marginBottom: 20,
+
+    borderRadius: 15,
+    padding: 20,
+    width: width * 0.9,
+  },
+  adminInput: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 10,
+    padding: 10,
+    color: '#fff',
+    marginBottom: 10,
+  },
+  adminSubmitButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+  },
+  adminSubmitButtonText: {
+    color: '#4A00E0',
+    fontWeight: 'bold',
   },
 });
