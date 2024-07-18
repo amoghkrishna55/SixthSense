@@ -7,12 +7,12 @@ import {Admin} from './app/admin';
 import Client from './app/client';
 import {Check} from './app/check';
 import Location from './app/location/index';
-// import Vision from './app/vision';
 import Boundary from './app/boundary';
 import Message from './app/message';
 import ReadMessage from './app/readMessage';
 import SendMessage from './app/sendMessage';
 import Inbox from './app/inbox';
+import Vision from './app/vision';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,12 +25,12 @@ function App() {
         <Stack.Screen name="Client" component={Client} />
         <Stack.Screen name="Check" component={Check} />
         <Stack.Screen name="Location" component={Location} />
-        {/* <Stack.Screen name="Vision" component={Vision} /> */}
         <Stack.Screen name="Boundary" component={Boundary} />
         <Stack.Screen name="Message" component={Message} />
         <Stack.Screen name="ReadMessage" component={ReadMessage} />
         <Stack.Screen name="SendMessage" component={SendMessage} />
         <Stack.Screen name="Inbox" component={Inbox} />
+        <Stack.Screen name="Vision" component={Vision} />
       </Stack.Navigator>
     </NavigationContainer>
   );
