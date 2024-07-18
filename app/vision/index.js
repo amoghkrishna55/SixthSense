@@ -64,7 +64,6 @@ export default function Vision({navigation}) {
             console.log(response);
 
             updateStatus('Analysis complete');
-            await speakMessage('Analysis complete. Here is what I see:');
             await speakMessage(response);
 
             updateStatus('Navigating back...');

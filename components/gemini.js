@@ -33,6 +33,6 @@ export const gemini = async photo64 => {
       console.log('Error message:', error.message);
     }
     console.log('Error config:', error.config);
-    return error;
+    return "There seems to be an error. I'm sorry, I cannot process this image.";
   }
 };
