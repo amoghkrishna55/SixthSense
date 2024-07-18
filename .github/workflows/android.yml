@@ -33,6 +33,11 @@ jobs:
           npm i -g corepack
           npm install
 
+      - name: Create .env file
+        run: |
+          echo GEMINI_KEY=${{secrets.GEMINI_KEY}} >> .env
+          echo FIREBASE_CONFIG=${{secrets.FIREBASE_CONFIG}} >> .env
+
       - name: Build application
         run: |
           cd android
