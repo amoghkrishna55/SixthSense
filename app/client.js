@@ -131,6 +131,7 @@ export default function Client({setIsClient, navigation}) {
           // navigation.navigate('Location');
         } else {
           console.log('Swipe left detected');
+          navigation.navigate('Vision');
         }
       } else {
         if (nativeEvent.velocityY > 0) {
