@@ -11,17 +11,9 @@ import {
 import {getStorage} from 'firebase/storage';
 import {Alert} from 'react-native';
 import * as Device from 'expo-device';
+import {FIREBASE_CONFIG} from '@env';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyDaCUDrdkmsUqED8YP2Or9g1U4UPeMIfD4',
-  authDomain: 'sixthsense-3d1cb.firebaseapp.com',
-  databaseURL: 'https://sixthsense-3d1cb-default-rtdb.firebaseio.com',
-  projectId: 'sixthsense-3d1cb',
-  storageBucket: 'sixthsense-3d1cb.appspot.com',
-  messagingSenderId: '659842524114',
-  appId: '1:659842524114:web:671461303ec47986905e0b',
-  measurementId: 'G-ESGWHET67E',
-};
+const firebaseConfig = JSON.parse(FIREBASE_CONFIG);
 
 const app = initializeApp(firebaseConfig);
 export const database = getDatabase(app);
