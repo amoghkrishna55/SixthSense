@@ -56,11 +56,23 @@ export const attachListener = () => {
   }
 };
 
-export const runSOS = () => {
+export const runSOS = (latitude, longitude) => {
   const rootRef = ref(database);
   update(rootRef, {sos: 1})
     .catch(error => console.error('Update failed:', error))
     .then(() => console.log('SOS sent from firebase.mjs'));
+  const dbRef = ref(database, 'sosHistory');
+  push(dbRef, {
+    time: new Date().getTime(),
+    latitude: latitude,
+    longitude: longitude,
+  })
+    .catch(error => {
+      console.error('Error adding data: ', error);
+    })
+    .then(() =>
+      console.log('SOS history updated with ' + latitude + ' ' + longitude),
+    );
 };
 export const updateStatus = () => {
   const db = getDatabase();
