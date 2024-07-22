@@ -175,7 +175,7 @@ export default function Client({setIsClient, navigation}) {
             />
           </View>
 
-          <SOS>
+          <SOS latitude={latitude} longitude={longitude}>
             <View style={styles.cardContainer}>
               <View style={styles.card}>
                 <Ionicons name="swap-horizontal" size={40} color="#4A90E2" />

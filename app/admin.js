@@ -107,7 +107,7 @@ const ClientInformation = ({showSettings, setShowSettings}) => {
   );
 };
 
-const Header = ({setShowSettings, showSettings}) => {
+const Header = ({setShowSettings, showSettings, navigation}) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -136,20 +136,34 @@ const Header = ({setShowSettings, showSettings}) => {
           </Animatable.Text>
           <Text style={styles.adminText}>Admin</Text>
         </View>
-        <View style={styles.timeContainer}>
-          <Ionicons name="time-outline" size={24} color="#fff" />
-          <Text style={styles.timeText}>
-            {currentTime.toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </Text>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={styles.timeContainer}>
+              <Ionicons name="time-outline" size={24} color="#fff" />
+              <Text style={styles.timeText}>
+                {currentTime.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.notificationButton}
+              onPress={() => setShowSettings(!showSettings)}>
+              <Ionicons name="cog-outline" size={30} color="#fff" />
+            </TouchableOpacity>
+          </View>
+          <Button
+            text="SOS "
+            onPress={() => navigation.navigate('SOS')}
+            Ion="alert-circle-outline"
+            style={{width: 100}}
+          />
         </View>
-        <TouchableOpacity
-          style={styles.notificationButton}
-          onPress={() => setShowSettings(!showSettings)}>
-          <Ionicons name="cog-outline" size={30} color="#fff" />
-        </TouchableOpacity>
       </LinearGradient>
     </Animatable.View>
   );
@@ -164,7 +178,11 @@ export const Admin = ({setIsClient, navigation}) => {
   return (
     <LinearGradient colors={['#4A00E0', '#8E2DE2']} style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <Header showSettings={showSettings} setShowSettings={setShowSettings} />
+        <Header
+          showSettings={showSettings}
+          setShowSettings={setShowSettings}
+          navigation={navigation}
+        />
         <ClientInformation
           showSettings={showSettings}
           setShowSettings={setShowSettings}
@@ -323,5 +341,11 @@ const styles = StyleSheet.create({
   adminSubmitButtonText: {
     color: '#4A00E0',
     fontWeight: 'bold',
+  },
+  sos: {
+    fontSize: 40,
+    color: '#292927',
+    fontWeight: 'bold',
+    marginTop: 10,
   },
 });

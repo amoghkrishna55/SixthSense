@@ -7,7 +7,7 @@ import * as Speech from 'expo-speech';
 
 const {height} = Dimensions.get('window');
 
-const SOS = forwardRef(({children}, ref) => {
+const SOS = forwardRef(({children, latitude, longitude}, ref) => {
   const [text, setText] = useState('Keep holding to send SOS');
   const sizeAnim = useRef(new Animated.Value(0)).current;
   const posX = useRef(new Animated.Value(0)).current;
@@ -47,7 +47,7 @@ const SOS = forwardRef(({children}, ref) => {
         if (sizeAnim._value === 1.8 * height) {
           console.log('SOS sent');
           Speech.speak('SOS ACTIVATED');
-          runSOS();
+          runSOS(latitude, longitude);
           setText('SOS sent');
           ReactNativeHapticFeedback.trigger('impactHeavy', options);
           setTimeout(() => {
