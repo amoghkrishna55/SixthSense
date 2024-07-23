@@ -14,6 +14,7 @@ import SendMessage from './app/sendMessage';
 import Inbox from './app/inbox';
 import Vision from './app/vision';
 import PermissionsHandler from './components/permissionHandler';
+import SOS from './app/sos';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ function App() {
           <Stack.Screen name="SendMessage" component={SendMessage} />
           <Stack.Screen name="Inbox" component={Inbox} />
           <Stack.Screen name="Vision" component={Vision} />
+          <Stack.Screen name="SOS" component={SOS} />
         </Stack.Navigator>
       </NavigationContainer>
     </PermissionsHandler>

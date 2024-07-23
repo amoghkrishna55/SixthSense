@@ -12,6 +12,7 @@ import {getStorage} from 'firebase/storage';
 import {Alert} from 'react-native';
 import * as Device from 'expo-device';
 import {FIREBASE_CONFIG} from '@env';
+import {geoCoding} from './reverseGeocoding';
 
 const firebaseConfig = JSON.parse(FIREBASE_CONFIG);
 
@@ -31,7 +32,7 @@ export const attachListener = () => {
         if (snapshot.val().sos === 1) {
           console.log('SOS received');
           Alert.alert(
-            'SOS received',
+            'SOS received at ',
             'Please check the location',
             [
               {
@@ -56,11 +57,26 @@ export const attachListener = () => {
   }
 };
 
-export const runSOS = () => {
+export const runSOS = async (latitude, longitude) => {
   const rootRef = ref(database);
   update(rootRef, {sos: 1})
     .catch(error => console.error('Update failed:', error))
     .then(() => console.log('SOS sent from firebase.mjs'));
+  const geoData = await geoCoding(latitude, longitude);
+  console.log('Reverse Geocoding:', geoData);
+  const dbRef = ref(database, 'sosHistory');
+  push(dbRef, {
+    time: new Date().getTime(),
+    latitude: latitude,
+    longitude: longitude,
+    displayName: geoData.display_name,
+  })
+    .catch(error => {
+      console.error('Error adding data: ', error);
+    })
+    .then(() =>
+      console.log('SOS history updated with ' + latitude + ' ' + longitude),
+    );
 };
 export const updateStatus = () => {
   const db = getDatabase();

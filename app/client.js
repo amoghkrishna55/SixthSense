@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import {
   PanGestureHandler,
   State,
@@ -8,7 +15,7 @@ import {
 import {detachListener} from '../components/firebase.js';
 import SOS from '../components/sos';
 import {database} from '../components/firebase.js';
-import {ref, update, onValue} from 'firebase/database';
+import {ref, update, onValue, set} from 'firebase/database';
 import * as Location from 'expo-location';
 import {updateDevice} from '../components/firebase.js';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -19,6 +26,7 @@ export default function Client({setIsClient, navigation}) {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [outsideboundary, setoutsideBoundary] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let intervalId;
@@ -103,6 +111,7 @@ export default function Client({setIsClient, navigation}) {
           console.log('Location changed');
           setLatitude(location.coords.latitude);
           setLongitude(location.coords.longitude);
+          setIsLoading(false);
           const rootRef = ref(database);
           update(rootRef, {
             location: {
@@ -145,6 +154,14 @@ export default function Client({setIsClient, navigation}) {
     }
   };
 
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return outsideboundary ? (
     <View style={styles.outsideBoundaryScreen}>
       <View style={styles.warningContainer}>
@@ -175,7 +192,7 @@ export default function Client({setIsClient, navigation}) {
             />
           </View>
 
-          <SOS>
+          <SOS latitude={latitude} longitude={longitude}>
             <View style={styles.cardContainer}>
               <View style={styles.card}>
                 <Ionicons name="swap-horizontal" size={40} color="#4A90E2" />
