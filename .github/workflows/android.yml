@@ -37,6 +37,7 @@ jobs:
         run: |
           echo GEMINI_KEY=${{secrets.GEMINI_KEY}} >> .env
           echo FIREBASE_CONFIG=${{secrets.FIREBASE_CONFIG}} >> .env
+          echo GEOCODE_API=${{secrets.GEOCODE_API}} >> .env
 
       - name: Build application
         run: |
