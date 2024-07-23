@@ -1,4 +1,4 @@
-# Welcome to SixthSense 👋
+# Welcome to SixthSense
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/amoghkrishna55/SixthSense/main/docs/assets/banner.png" alt="SixthSense Logo" width="400"/>
