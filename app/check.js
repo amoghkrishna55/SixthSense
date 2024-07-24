@@ -162,7 +162,7 @@ export const Check = ({setIsClient}) => {
                 styles.adminInput,
                 isError && {borderColor: 'red', borderWidth: 2},
               ]}
-              placeholder="Enter admin password"
+              placeholder="Password is test"
               placeholderTextColor="#999"
               secureTextEntry
               value={adminPassword}
