@@ -192,6 +192,11 @@ export const Admin = ({setIsClient, navigation}) => {
           delay={300}
           style={styles.buttons}>
           <Button
+            text="HandSign Prediction "
+            onPress={() => navigation.navigate('HandSign')}
+            Ion="hand-left-outline"
+          />
+          <Button
             text="Change Role "
             onPress={() => setIsClient(null)}
             Ion="infinite"
