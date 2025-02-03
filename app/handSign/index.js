@@ -16,7 +16,7 @@ export default function HandSign({navigation}) {
       try {
         const photo = await camRef.current.takePictureAsync({base64: true});
         const response = await axios.post(
-          'https://11ab-210-89-61-6.ngrok-free.app/predict',
+          'https://1b5f-125-16-189-236.ngrok-free.app/predict',
           {
             image_base64: photo.base64,
           },
