@@ -16,7 +16,6 @@ export default function HandSign({navigation}) {
   const camRef = useRef(null);
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -26,14 +25,7 @@ export default function HandSign({navigation}) {
         await tf.ready();
         console.log('TensorFlow.js is ready');
 
-        const loadedModel = await tf.loadLayersModel(modelURI, {
-          onProgress: progress => {
-            if (isMounted) {
-              console.log('Loading progress:', progress);
-              setLoadingProgress(progress);
-            }
-          },
-        });
+        const loadedModel = await tf.loadLayersModel(modelURI);
 
         if (isMounted) {
           console.log('Model loaded successfully');
@@ -53,22 +45,19 @@ export default function HandSign({navigation}) {
     return () => {
       isMounted = false;
     };
-  }, []); // Empty dependency array
+  }, []);
 
   const preprocessImage = async imageUri => {
     try {
-      // Read the image file
       const imgB64 = await FileSystem.readAsStringAsync(imageUri, {
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      // Convert base64 to Uint8Array
       const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
       const rawImageData = new Uint8Array(imgBuffer);
 
-      // Decode and preprocess
       const imageTensor = decodeJpeg(rawImageData);
-      const grayscaleImage = imageTensor.mean(2).expandDims(-1); // Convert to grayscale
+      const grayscaleImage = imageTensor.mean(2).expandDims(-1);
       const resized = tf.image.resizeBilinear(grayscaleImage, [128, 128]);
       const normalized = resized.div(255.0);
       return normalized.expandDims(0);
@@ -79,6 +68,7 @@ export default function HandSign({navigation}) {
   };
 
   const predictSign = async imageUri => {
+    const predictionData = [];
     if (!model) {
       console.error('Model not loaded');
       return;
@@ -91,26 +81,31 @@ export default function HandSign({navigation}) {
       const prediction = await model.predict(processedImage);
       console.log('Prediction:', prediction.dataSync());
       const data = prediction.dataSync();
-      //   data.map((item, index) => {
-      //     console.log('Index:', String.fromCharCode(65 + index), 'Item:', item);
-      //   });
-      const predictedClass = prediction.argMax(-1);
-      const confidence = prediction.max().dataSync()[0];
+      console.log('Prediction Data:', predictionData);
+
+      data.map((item, index) => {
+        if (index === 0) {
+          predictionData.push(['blank', item]);
+        } else {
+          predictionData.push([String.fromCharCode(64 + index), item]);
+        }
+      });
+
+      predictionData.sort((a, b) => {
+        return b[1] - a[1];
+      });
 
       console.log('Prediction complete');
-      console.log('Predicted class:', predictedClass.dataSync()[0]);
-      console.log('Confidence:', confidence);
+      console.log('Prediction Data:', predictionData);
 
       setApiResponse(
-        `Predicted Class: ${predictedClass.dataSync()[0]} (Confidence: ${(
-          confidence * 100
+        `Predicted Class: ${predictionData[0][0]} (Confidence: ${(
+          predictionData[0][1] * 100
         ).toFixed(2)}%)`,
       );
 
-      // Cleanup
       processedImage.dispose();
       prediction.dispose();
-      predictedClass.dispose();
     } catch (error) {
       console.error('Error during prediction:', error);
       setApiResponse('Error during prediction');
@@ -156,9 +151,7 @@ export default function HandSign({navigation}) {
     return (
       <LinearGradient colors={['#4A00E0', '#8E2DE2']} style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.statusText}>
-            Loading model... {(loadingProgress * 100).toFixed(0)}%
-          </Text>
+          <Text style={styles.statusText}>Loading model...</Text>
         </View>
       </LinearGradient>
     );
