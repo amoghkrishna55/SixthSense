@@ -12,11 +12,11 @@ app = Flask(__name__)
 class SignLanguagePredictor:
     def __init__(self):
         # Load the main model
-        json_file = open("model/model_new.json", "r")
+        json_file = open("model-H5/model_new.json", "r")
         model_json = json_file.read()
         json_file.close()
         self.loaded_model = model_from_json(model_json)
-        self.loaded_model.load_weights("model/model_new.weights.h5")
+        self.loaded_model.load_weights("model-H5/model_new.weights.h5")
         print("Model loaded successfully")
 
     def preprocess_image(self, image):
@@ -42,7 +42,9 @@ class SignLanguagePredictor:
         # Initial predictions
         prediction = {'blank': result[0][0]}
         for i, letter in enumerate(ascii_uppercase):
+            print (i, letter)
             prediction[letter] = result[0][i + 1]
+            print(f'{letter}: {result[0][i + 1]}')
         prediction = sorted(prediction.items(), key=operator.itemgetter(1), reverse=True)
         current_symbol = prediction[0][0]
         return current_symbol, prediction[0][1]  # Return symbol and confidence

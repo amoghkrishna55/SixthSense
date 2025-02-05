@@ -1,43 +1,135 @@
 import {CameraView, useCameraPermissions} from 'expo-camera';
 import React, {useEffect, useState, useRef} from 'react';
-import {StyleSheet, Text, View, Animated} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Button from '../../components/button';
-import axios from 'axios';
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
+import {modelURI} from '../../components/modelHandler';
+import * as FileSystem from 'expo-file-system';
+import {decodeJpeg} from '@tensorflow/tfjs-react-native';
 
 export default function HandSign({navigation}) {
   const [permission, requestPermission] = useCameraPermissions();
   const [apiResponse, setApiResponse] = useState(null);
   const camRef = useRef(null);
+  const [model, setModel] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const predictHandSign = async () => {
-    if (permission?.granted) {
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadModel = async () => {
       try {
-        const photo = await camRef.current.takePictureAsync({base64: true});
-        const response = await axios.post(
-          'https://1b5f-125-16-189-236.ngrok-free.app/predict',
-          {
-            image_base64: photo.base64,
-          },
-        );
-        console.log(response.data);
-        setApiResponse(
-          `Predicted: ${response.data.predicted_symbol}  Confidence: ${response.data.confidence}`,
-        );
+        await tf.ready();
+        console.log('TensorFlow.js is ready');
+
+        const loadedModel = await tf.loadLayersModel(modelURI);
+
+        if (isMounted) {
+          console.log('Model loaded successfully');
+          setModel(loadedModel);
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('Error:', error);
-        setApiResponse('Error occurred');
-      } finally {
-        setTimeout(() => {
-          setApiResponse(null);
-        }, 3000);
+        console.error('Error loading model:', error);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
+    };
+
+    loadModel();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const preprocessImage = async imageUri => {
+    try {
+      const imgB64 = await FileSystem.readAsStringAsync(imageUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
+      const rawImageData = new Uint8Array(imgBuffer);
+
+      const imageTensor = decodeJpeg(rawImageData);
+      const grayscaleImage = imageTensor.mean(2).expandDims(-1);
+      const resized = tf.image.resizeBilinear(grayscaleImage, [128, 128]);
+      const normalized = resized.div(255.0);
+      return normalized.expandDims(0);
+    } catch (error) {
+      console.error('Error preprocessing image:', error);
+      throw error;
+    }
+  };
+
+  const predictSign = async imageUri => {
+    const predictionData = [];
+    if (!model) {
+      console.error('Model not loaded');
+      return;
+    }
+
+    try {
+      const processedImage = await preprocessImage(imageUri);
+      console.log('Image preprocessed successfully');
+
+      const prediction = await model.predict(processedImage);
+      console.log('Prediction:', prediction.dataSync());
+      const data = prediction.dataSync();
+      console.log('Prediction Data:', predictionData);
+
+      data.map((item, index) => {
+        if (index === 0) {
+          predictionData.push(['blank', item]);
+        } else {
+          predictionData.push([String.fromCharCode(64 + index), item]);
+        }
+      });
+
+      predictionData.sort((a, b) => {
+        return b[1] - a[1];
+      });
+
+      console.log('Prediction complete');
+      console.log('Prediction Data:', predictionData);
+
+      setApiResponse(
+        `Predicted Class: ${predictionData[0][0]} (Confidence: ${(
+          predictionData[0][1] * 100
+        ).toFixed(2)}%)`,
+      );
+
+      processedImage.dispose();
+      prediction.dispose();
+    } catch (error) {
+      console.error('Error during prediction:', error);
+      setApiResponse('Error during prediction');
+    }
+  };
+
+  const handleCapture = async () => {
+    if (!permission?.granted || !camRef.current) {
+      console.log('Camera permission not granted or camera not ready');
+      return;
+    }
+
+    try {
+      const photo = await camRef.current.takePictureAsync();
+      console.log('Photo captured:', photo.uri);
+      await predictSign(photo.uri);
+    } catch (error) {
+      console.error('Error capturing photo:', error);
+      setApiResponse('Error capturing photo');
     }
   };
 
   if (!permission) {
-    return <View></View>;
+    return <View />;
   }
 
   if (!permission.granted) {
@@ -55,6 +147,16 @@ export default function HandSign({navigation}) {
     );
   }
 
+  if (loading) {
+    return (
+      <LinearGradient colors={['#4A00E0', '#8E2DE2']} style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.statusText}>Loading model...</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
+
   return (
     <LinearGradient colors={['#4A00E0', '#8E2DE2']} style={styles.container}>
       <View style={styles.content}>
@@ -66,13 +168,7 @@ export default function HandSign({navigation}) {
           </View>
         )}
       </View>
-      <Button
-        text="Click"
-        onPress={() => {
-          console.log('clicked');
-          predictHandSign();
-        }}
-      />
+      <Button text="Capture" onPress={handleCapture} />
     </LinearGradient>
   );
 }
