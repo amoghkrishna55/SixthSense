@@ -79,9 +79,7 @@ export default function HandSign({navigation}) {
       console.log('Image preprocessed successfully');
 
       const prediction = await model.predict(processedImage);
-      console.log('Prediction:', prediction.dataSync());
       const data = prediction.dataSync();
-      console.log('Prediction Data:', predictionData);
 
       data.map((item, index) => {
         if (index === 0) {
