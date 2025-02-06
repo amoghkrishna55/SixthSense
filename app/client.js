@@ -138,6 +138,7 @@ export default function Client({setIsClient, navigation}) {
         if (nativeEvent.velocityX > 0) {
           console.log('Swipe right detected');
           // navigation.navigate('Location');
+          navigation.navigate('HandSign');
         } else {
           console.log('Swipe left detected');
           navigation.navigate('Vision');
@@ -196,8 +197,10 @@ export default function Client({setIsClient, navigation}) {
             <View style={styles.cardContainer}>
               <View style={styles.card}>
                 <Ionicons name="swap-horizontal" size={40} color="#4A90E2" />
-                <Text style={styles.cardTitle}>Swipe Left</Text>
-                <Text style={styles.cardText}>Navigate to Vision</Text>
+                <Text style={styles.cardTitle}>Swipe Left/Right</Text>
+                <Text style={styles.cardText}>
+                  Navigate to Vision/Hand Sign
+                </Text>
               </View>
               <View style={styles.card}>
                 <Ionicons name="swap-vertical" size={40} color="#50C878" />
