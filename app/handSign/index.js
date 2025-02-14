@@ -55,7 +55,7 @@ export default function HandSign({navigation}) {
       });
 
       const response = await axios.post(
-        'https://42ad-129-154-248-9.ngrok-free.app/preprocess',
+        'https://handsign-backend.onrender.com/preprocess',
         {
           image_base64: img64,
         },
