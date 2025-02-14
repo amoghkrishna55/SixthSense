@@ -24,14 +24,12 @@ class SignLanguagePredictor:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # Apply Gaussian blur
         blur = cv2.GaussianBlur(gray, (5, 5), 2)
-        # Apply adaptive thresholding
+        # Apply adaptive thresholding 
         th3 = cv2.adaptiveThreshold(blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
-        # Apply Otsu's thresholding with a decreased threshold value
-        ret, res = cv2.threshold(th3, 70, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)  # Decreased threshold value from 70 to 50
+        # Apply Otsu's thresholding
+        ret, res = cv2.threshold(th3, 70, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
         # Resize image
         resized_image = cv2.resize(res, (128, 128))
-        # # Save the preprocessed image
-        # cv2.imwrite("preprocessed_image.png", resized_image)
         return resized_image
 
     def predict(self, image):
