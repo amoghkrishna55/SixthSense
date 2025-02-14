@@ -9,6 +9,7 @@ import '@tensorflow/tfjs-react-native';
 import {modelURI} from '../../components/modelHandler';
 import * as FileSystem from 'expo-file-system';
 import {decodeJpeg} from '@tensorflow/tfjs-react-native';
+import axios from 'axios';
 
 export default function HandSign({navigation}) {
   const [permission, requestPermission] = useCameraPermissions();
@@ -49,9 +50,18 @@ export default function HandSign({navigation}) {
 
   const preprocessImage = async imageUri => {
     try {
-      const imgB64 = await FileSystem.readAsStringAsync(imageUri, {
+      const img64 = await FileSystem.readAsStringAsync(imageUri, {
         encoding: FileSystem.EncodingType.Base64,
       });
+
+      const response = await axios.post(
+        'https://42ad-129-154-248-9.ngrok-free.app/preprocess',
+        {
+          image_base64: img64,
+        },
+      );
+
+      const imgB64 = response.data.preprocessed_image;
 
       const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
       const rawImageData = new Uint8Array(imgBuffer);
