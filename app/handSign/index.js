@@ -48,20 +48,40 @@ export default function HandSign({navigation}) {
     };
   }, []);
 
+  // const preprocessImage = async imageUri => {
+  //   try {
+  //     const img64 = await FileSystem.readAsStringAsync(imageUri, {
+  //       encoding: FileSystem.EncodingType.Base64,
+  //     });
+
+  //     const response = await axios.post(
+  //       'https://handsign-backend.onrender.com/preprocess',
+  //       {
+  //         image_base64: img64,
+  //       },
+  //     );
+
+  //     const imgB64 = response.data.preprocessed_image;
+
+  //     const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
+  //     const rawImageData = new Uint8Array(imgBuffer);
+
+  //     const imageTensor = decodeJpeg(rawImageData);
+  //     const grayscaleImage = imageTensor.mean(2).expandDims(-1);
+  //     const resized = tf.image.resizeBilinear(grayscaleImage, [128, 128]);
+  //     const normalized = resized.div(255.0);
+  //     return normalized.expandDims(0);
+  //   } catch (error) {
+  //     console.error('Error preprocessing image:', error);
+  //     throw error;
+  //   }
+  // };
+
   const preprocessImage = async imageUri => {
     try {
-      const img64 = await FileSystem.readAsStringAsync(imageUri, {
+      const imgB64 = await FileSystem.readAsStringAsync(imageUri, {
         encoding: FileSystem.EncodingType.Base64,
       });
-
-      const response = await axios.post(
-        'https://handsign-backend.onrender.com/preprocess',
-        {
-          image_base64: img64,
-        },
-      );
-
-      const imgB64 = response.data.preprocessed_image;
 
       const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
       const rawImageData = new Uint8Array(imgBuffer);
